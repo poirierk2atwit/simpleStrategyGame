@@ -1,2 +1,2 @@
-module comp_sci_fInal {
+module Comp_Sci_Final {
 }

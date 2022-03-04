@@ -42,4 +42,12 @@ public class Map {
 	public boolean removeEntity(int x, int y) {
 		return false;
 	}
+	
+	public void strike(int x, int y) {
+		
+	}
+	
+	public void fogOfWar(int team) {
+		
+	}
 }

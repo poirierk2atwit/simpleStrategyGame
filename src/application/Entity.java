@@ -9,24 +9,23 @@ public abstract class Entity {
 	int team;
 	boolean[][] visionMap;
 	
-	public Entity(int x, int y) {
+	public Entity(int x, int y, int team) {
 		this.x = x;
 		this.y = y;
+		this.team = team;
 	}
 	
 	public boolean isDead() {
 		return healthPoints <= 0;
 	}
 	
-	public boolean[][] setVisionMap(Map m) {
-		return null;
-	}
+	abstract public boolean[][] setVisionMap(GameMap m);
 	
 	public boolean[][] getVisionMap() {
 		return visionMap;
 	}
 	
-	public boolean canSee(Map m, int x, int y) {
+	public boolean canSee(GameMap m, int x, int y) {
 		return false;
 	}
 	
@@ -34,8 +33,12 @@ public abstract class Entity {
 		return this.team == team;
 	}
 	
-	abstract public boolean attack(Map m, int x, int y);
+	abstract public boolean canAttack(GameMap m, int x, int y);
 	
-	abstract public boolean move(Map m, int x, int y);
+	abstract public boolean canMove(GameMap m, int x, int y);
+	
+	abstract public void attack(GameMap m, int x, int y);
+	
+	abstract public void move(GameMap m, int x, int y);
 	
 }

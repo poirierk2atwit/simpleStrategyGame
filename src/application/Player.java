@@ -52,4 +52,11 @@ public class Player {
 	public int[] getOperationPos() {
 		return operationPos;
 	}
+	
+	public void newTurn() {
+		resetMoves();
+		resetStrikes();
+		selectedPos = null;
+		operationPos = null;
+	}
 }

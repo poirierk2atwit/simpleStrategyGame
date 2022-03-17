@@ -59,4 +59,8 @@ public class Player {
 		selectedPos = null;
 		operationPos = null;
 	}
+	
+	public int getTeam() {
+		return team;
+	}
 }

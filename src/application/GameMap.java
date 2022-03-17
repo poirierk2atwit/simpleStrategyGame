@@ -165,6 +165,10 @@ public class GameMap {
 		return false;
 	}
 	
+	public boolean attack(int[] pos1, int[] pos2, int team) {
+		return this.attack(pos1[0], pos1[1], pos2[0], pos2[1], team);
+	}
+	
 	/**
 	 * If there is an entity at x1 y1 of the correct team and entity.canMove() return true, runs the x1 y1 Entity object move method.
 	 * 
@@ -177,6 +181,10 @@ public class GameMap {
 	 */
 	public boolean move(int x1, int y1, int x2, int y2, int team) {
 		return false;
+	}
+	
+	public boolean move(int[] pos1, int[] pos2, int team) {
+		return this.move(pos1[0], pos1[1], pos2[0], pos2[1], team);
 	}
 	
 	/**

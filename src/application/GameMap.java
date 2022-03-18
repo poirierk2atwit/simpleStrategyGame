@@ -1,6 +1,8 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -36,6 +38,19 @@ public class GameMap {
 	//public GameMap() {
 	//	
 	//}
+	
+	/**
+	 * Creates a map with all the values needed for a GameMap object.
+	 * Intended use is to then create a JSON file for the GameMap.
+	 * 
+	 * @param map A GameMap object
+	 * @return A map object with the values of a GameMap object.
+	 */
+//	public String toJSON() {
+//		
+//		
+//		return output;
+//	}
 	
 	/**
 	 * Gets the Tile object at position x y.
@@ -141,6 +156,10 @@ public class GameMap {
 		return false;
 	}
 	
+	public boolean canStrike(int[] pos, int team) {
+		return this.canStrike(pos[0], pos[1], team);
+	}
+	
 	/**
 	 * Executes an artillery strike on the position x y, damaging the tile and any entity present.
 	 * 
@@ -149,6 +168,10 @@ public class GameMap {
 	 */
 	public void strike(int x, int y, int team) {
 		
+	}
+	
+	public void strike(int[] pos, int team) {
+		this.strike(pos[0], pos[1], team);
 	}
 	
 	/**
@@ -202,6 +225,12 @@ public class GameMap {
 	 * @param args ignored
 	 */
 	public static void main (String[] args) { //Leave this at the bottom of the file please
+		int x = 1;
+		int y = 1;
+		GameMap testMap = new GameMap(x, y);
 		
+		//write tiles and entities in whatever way seems well enough
+		
+		//testMapJSON = Gson.toJSON
 	}
 }

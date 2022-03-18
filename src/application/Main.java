@@ -32,57 +32,56 @@ public class Main {
 					for (int i = 0; i < players.length; i++) {
 						players[i].newTurn();
 						System.out.println("Player " + i);
+						System.out.println("Input a command. Help for options. ");
 						
-						System.out.print("Input a command. Help for options. ");
-						String command = input.nextLine();
-						String[] coms = command.split(" ");
-						
-						//User interface will use send commands ig
-						
-						if (coms[0].equals("set")) {
-							if (coms[1].equals("selectedPos")) {
-								//don't worry about proper input; user interface will use proper values.
-								int x = Integer.parseInt(coms[2]);
-								int y = Integer.parseInt(coms[3]);
-								if (currentMap.isEntitiy(x, y) && currentMap.getEntity(x, y).isTeam(players[i].getTeam())) {
-									players[i].setSelectedPos(x, y);
-								} else {
-									System.out.println("Can't select tile.");
+						while (players[i].getMoves() > 0 && players[i].getStrikes() > 0) {
+							System.out.print(" > ");
+							String command = input.nextLine();
+							String[] coms = command.split(" ");
+							
+							//User interface will use send commands ig
+							
+							if (coms[0].equals("set")) {
+								if (coms[1].equals("selectedPos")) {
+									//don't worry about proper input; user interface will use proper values.
+									int x = Integer.parseInt(coms[2]);
+									int y = Integer.parseInt(coms[3]);
+									if (currentMap.isEntitiy(x, y) && currentMap.getEntity(x, y).isTeam(players[i].getTeam())) {
+										players[i].setSelectedPos(x, y);
+									} else {
+										System.out.println("Can't select tile.");
+									}
+								} else if (coms[1].equals("operationPos")) {
+									players[i].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
 								}
-							} else if (coms[1].equals("operationPos")) {
-								players[i].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
+							} else if (coms[0].equals("move")) {
+								if (!currentMap.move(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
+									System.out.println("Cannot complete move.");
+								}
+							} else if (coms[0].equals("attack")) {
+								if (!currentMap.attack(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
+									System.out.println("Cannot complete attack.");
+								}
+							} else if (coms[0].equals("strike")) {
+								if (!currentMap.canStrike(players[i].getOperationPos(), players[i].getTeam()) || !players[i].useStrike()) {
+									System.out.println("Cannot complete strike.");
+								} else {
+									currentMap.strike(players[i].getOperationPos(), players[i].getTeam());
+								}
+							} else if (coms[0].equals("display")) {
+								System.out.println("To implement");
+							} else if (coms[0].equals("end")){
+								break;
+							} else if (coms[0].equals("help")) {
+								System.out.println("set <selectedPos|operationPos> x y\nmove\nattack\nstrike\ndisplay\nend\nhelp\n");
+							} else {
+								System.out.println("Unknown Command.");
 							}
-						} else if (coms[0].equals("move")) {
-							if (!currentMap.move(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
-								System.out.println("Cannot complete move.");
-							}
-						} else if (coms[0].equals("attack")) {
-							if (!currentMap.attack(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
-								System.out.println("Cannot complete attack.");
-							}
-						} else if (coms[0].equals("strike")) {
-							
-						} else if (coms[0].equals("display")) {
-							
-						} else if (coms[0].equals("end")){
-							continue;
-						} else {
-							System.out.println("Unknown Command.");
-						}
-						
+						}	
 					}
+					//implement win detection
 				}
 			}
 		}
-		
-		//Run game
-		//	Open map object
-		//	Set entity locations
-		// 	create 2 player objects in an array
-		// 	For loop for all players wrapped by a while loop
-		// 	Implement move, attack, strike, select, and secondary select functions
-		//	Implement mediary state for switching players
-
 	}
-
 }

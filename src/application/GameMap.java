@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
+import entities.Entity;
 import tiles.ExampleTile1;
 import tiles.Tile;
 import tiles.TileTypeAdapter;
@@ -311,8 +312,8 @@ public class GameMap {
 	 * @throws IOException 
 	 */
 	public static void main (String[] args) throws IOException { //Leave this at the bottom of the file please
-		int x = 1;
-		int y = 1;
+		//int x = 1;
+		//int y = 1;
 		Tile[][] testTile = {{new ExampleTile1()}};
 		GameMap testMap = new GameMap(testTile);
 		

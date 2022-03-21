@@ -1,4 +1,6 @@
-package application;
+package entities;
+
+import application.GameMap;
 
 public abstract class Entity {
 	int x;

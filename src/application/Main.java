@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.util.Scanner;
 
 import tiles.Tile;
@@ -13,7 +14,7 @@ public class Main {
 	public static void main(String[] args) {
 		//Load in textures
 		
-		GameMap currentMap;
+		GameMap currentMap = new GameMap(); 
 		Player[] players = {new Player(0), new Player(1)};
 		
 		Scanner input = new Scanner(System.in);
@@ -25,9 +26,24 @@ public class Main {
 				System.out.println("Goodbye.");
 				break;
 			} else if (thisInput.equals("NewGame")) {
-				//initialize currentMap from file of proper map
-				Tile[][] blank = new Tile[2][2]; //temporary
-				currentMap = new GameMap(blank); //temporary
+				File[] files = new File("src/maps").listFiles();
+				String mapList = "Avalible maps: ";
+				for (int i = 0; i < files.length; i++) {
+					mapList += "\n  " + files[i].getName().split(".")[0];
+				}
+				System.out.println(mapList + "\n");
+				while (true) {
+					System.out.print("Write a map name: ");
+					String mapName = input.next();
+					currentMap = GameMap.fromFile(mapName);
+					if (currentMap == null) {
+						System.out.println("Map not found.");
+					} else {
+						System.out.println("Playing on map " + mapName + ".");
+						break;
+					}
+				}
+				
 				//initialize players
 				
 				while (true) {

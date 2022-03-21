@@ -1,8 +1,9 @@
-package application;
+package tiles;
 
 public abstract class Tile {
 	boolean isVisible;
 	int health;
+	boolean traversable;
 	boolean destroyed;
 	boolean isDestroyable;
 	int obscurity;

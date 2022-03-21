@@ -1,8 +1,20 @@
 package application;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+
+import tiles.ExampleTile1;
+import tiles.Tile;
+import tiles.TileTypeAdapter;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -10,8 +22,13 @@ import java.util.Map;
  * @author poirierk2
  */
 public class GameMap {
-	Tile[][] tiles;
-	ArrayList<Entity> entities = new ArrayList<Entity>();
+	public static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Tile.class, new TileTypeAdapter()).create();
+	private Tile[][] tiles;
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	
+	public GameMap() {
+		
+	}
 	
 	/**
 	 * Creates a blank GameMap object with rows r and columns c
@@ -32,25 +49,7 @@ public class GameMap {
 		this.tiles = tiles;
 	}
 	
-	///**
-	// * Creates a GameMap object from loading a file.
-	// */
-	//public GameMap() {
-	//	
-	//}
-	
-	/**
-	 * Creates a map with all the values needed for a GameMap object.
-	 * Intended use is to then create a JSON file for the GameMap.
-	 * 
-	 * @param map A GameMap object
-	 * @return A map object with the values of a GameMap object.
-	 */
-//	public String toJSON() {
-//		
-//		
-//		return output;
-//	}
+	//Assign new GameMap directly from the json as in GameMap map = gson.fromJson(data, GameMap.class);
 	
 	/**
 	 * Gets the Tile object at position x y.
@@ -220,17 +219,111 @@ public class GameMap {
 	}
 	
 	/**
+	 * Creates JSON text with all the values needed for a GameMap object.
+	 * Intended use is to then create a JSON file for the GameMap.
+	 * 
+	 * @param map A GameMap object
+	 * @return JSON text with the values of a GameMap object.
+	 * @throws IOException 
+	 * @throws JsonIOException 
+	 */
+	public String toJson() {	
+		return gson.toJson(this);
+	}
+	
+	/**
+	 * Creates a json file by the name name in the maps package of the GameMap
+	 * 
+	 * @param name name of the file
+	 * @param overwrite whether this function will overwrite an existing file.
+	 * @return Success
+	 */
+	public boolean toFile(String name, boolean overwrite) {
+		String filePath = "src/maps/";
+		String fileName = name + ".json";
+		
+		File myObj = new File(filePath + fileName);
+		
+		try {
+	      System.out.println(myObj.getAbsolutePath() + "\n");
+	      if (myObj.createNewFile()) {
+	        System.out.println("File created: " + myObj.getName());
+	      } else {
+	    	  System.out.println("File already exists.");
+	        if (!overwrite) {
+	        	return false;
+	        }
+	      }
+	    } catch (IOException e) {
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	      return false;
+	    }
+		
+		try {
+			FileWriter myWriter = new FileWriter(filePath + fileName);
+	      	myWriter.write(this.toJson());
+	      	myWriter.close();
+	      	System.out.println("Successfully wrote to the file.");
+	    } catch (IOException e) {
+	    	System.out.println("An error occurred.");
+	      	e.printStackTrace();
+	      	return false;
+	    }
+		return true;
+	}
+	
+	public boolean toFile(String name) {
+		return toFile(name, false);
+	}
+	
+	/**
+	 * Generates a GameMap object from the file specified using Gson and a custom deserializer.
+	 * 
+	 * @param name name of the file to read
+	 * @return a GameMap object from the file.
+	 */
+	public static GameMap fromFile(String name) {
+		String filePath = "src/maps/";
+		String fileName = name + ".json";
+		
+		File myObj = new File(filePath + fileName);
+		
+		try {
+			Scanner gameMapFile = new Scanner(myObj);
+			String json = "";
+			while (gameMapFile.hasNextLine()) {
+				json += gameMapFile.nextLine();
+			}
+			gameMapFile.close();
+			return gson.fromJson(json, GameMap.class);
+		} catch (Exception e) {
+			System.out.println("An error occurred.");
+		    e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * A main that can be run as a developer utility for creating maps. NOT THE MAIN FOR THE GAME.
 	 * 
 	 * @param args ignored
+	 * @throws IOException 
 	 */
-	public static void main (String[] args) { //Leave this at the bottom of the file please
+	public static void main (String[] args) throws IOException { //Leave this at the bottom of the file please
 		int x = 1;
 		int y = 1;
-		GameMap testMap = new GameMap(x, y);
+		Tile[][] testTile = {{new ExampleTile1()}};
+		GameMap testMap = new GameMap(testTile);
 		
 		//write tiles and entities in whatever way seems well enough
 		
-		//testMapJSON = Gson.toJSON
+		System.out.println(testMap.toJson());
+		
+		String name = "mapTest2";
+		testMap.toFile(name, true);
+		
+		System.out.println("\n" + GameMap.fromFile(name).toJson());
+		
 	}
 }

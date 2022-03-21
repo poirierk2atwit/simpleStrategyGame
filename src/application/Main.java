@@ -2,6 +2,8 @@ package application;
 
 import java.util.Scanner;
 
+import tiles.Tile;
+
 public class Main {
 
 	//Implement text based map viewing functions for debug
@@ -77,7 +79,8 @@ public class Main {
 							} else {
 								System.out.println("Unknown Command.");
 							}
-						}	
+						}
+						//implement change player indicator
 					}
 					//implement win detection
 				}

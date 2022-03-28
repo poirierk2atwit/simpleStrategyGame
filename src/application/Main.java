@@ -12,11 +12,7 @@ public class Main {
 		for (int j = 0; j < map.height(); j++) {
 			for (int i = 0; i < map.length(); i++) {
 				if (attribute.equals("isVisible")) {
-					if (map.getTile(i, j).isVisible()) {
-						toPrint = "1";
-					} else {
-						toPrint = "0";
-					}
+					toPrint = map.getTile(i, j).isVisible() ? "1" : "0";
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(i, j).getHealth();
 				} else if (attribute.equals("isEntity")) {
@@ -69,7 +65,6 @@ public class Main {
 						System.out.println("Map not found.");
 					} else {
 						System.out.println("Playing on map " + mapName + ".\n");
-						System.out.println(currentMap.getEntities().get(0).toString());
 						break;
 					}
 				}
@@ -77,12 +72,14 @@ public class Main {
 				//initialize players
 				
 				while (true) {
-					for (int i = 0; i < players.length; i++) {
-						players[i].newTurn();
-						System.out.println("Player " + i);
+					for (int p = 0; p < players.length; p++) {
+						players[p].newTurn();
+						currentMap.fogOfWar(p);
+						System.out.println("Player " + p);
 						System.out.println("Input a command. Help for options. ");
+						input.nextLine();
 						
-						while (players[i].getMoves() > 0 && players[i].getStrikes() > 0) {
+						while (players[p].getMoves() > 0 && players[p].getStrikes() > 0) {
 							System.out.print(" > ");
 							String command = input.nextLine();
 							String[] coms = command.split(" ");
@@ -94,27 +91,27 @@ public class Main {
 									//don't worry about proper input; user interface will use proper values.
 									int x = Integer.parseInt(coms[2]);
 									int y = Integer.parseInt(coms[3]);
-									if (currentMap.isEntitiy(x, y) && currentMap.getEntity(x, y).isTeam(players[i].getTeam())) {
-										players[i].setSelectedPos(x, y);
+									if (currentMap.isEntitiy(x, y) && currentMap.getEntity(x, y).isTeam(players[p].getTeam())) {
+										players[p].setSelectedPos(x, y);
 									} else {
 										System.out.println("Can't select tile.");
 									}
 								} else if (coms[1].equals("operationPos")) {
-									players[i].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
+									players[p].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
 								}
 							} else if (coms[0].equals("move")) {
-								if (!currentMap.move(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
+								if (!currentMap.move(players[p].getSelectedPos(), players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete move.");
 								}
 							} else if (coms[0].equals("attack")) {
-								if (!currentMap.attack(players[i].getSelectedPos(), players[i].getOperationPos(), players[i].getTeam()) || !players[i].useMove()) {
+								if (!currentMap.attack(players[p].getSelectedPos(), players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete attack.");
 								}
 							} else if (coms[0].equals("strike")) {
-								if (!currentMap.canStrike(players[i].getOperationPos(), players[i].getTeam()) || !players[i].useStrike()) {
+								if (!currentMap.canStrike(players[p].getOperationPos(), players[p].getTeam()) || !players[p].useStrike()) {
 									System.out.println("Cannot complete strike.");
 								} else {
-									currentMap.strike(players[i].getOperationPos(), players[i].getTeam());
+									currentMap.strike(players[p].getOperationPos(), players[p].getTeam());
 								}
 							} else if (coms[0].equals("display")) {
 								printMap(coms[1], currentMap);
@@ -127,10 +124,13 @@ public class Main {
 							}
 						}
 						//implement change player indicator
+						System.out.print("Press ENTER when the next player is ready. ");
+						input.nextLine();
 					}
 					//implement win detection
 				}
 			}
 		}
+		input.close();
 	}
 }

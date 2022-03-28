@@ -116,7 +116,13 @@ public class GameMap {
 	 * @return all Entity objects that match the team specified
 	 */
 	public ArrayList<Entity> getEntitiesTeam (int team) {
-		return null;
+		ArrayList<Entity> output = entities;
+		for (int i = output.size() - 1; i >= 0; i--) {
+			if (!output.get(i).isTeam(team)) {
+				output.remove(i);
+			}
+		}
+		return output;
 	}
 	
 	/**
@@ -229,7 +235,43 @@ public class GameMap {
 	 * @param team team entities will be selected from
 	 */
 	public void fogOfWar(int team) {
-		
+		ArrayList<Entity> teamEntities = this.getEntitiesTeam(team);
+		this.clearVisibility();
+		for (int c = 0; c < teamEntities.size(); c++) {
+			Entity thisEntity = teamEntities.get(c);
+			boolean[][] thisVisionMap = thisEntity.setVisionMap(this);
+			int i2 = 0;
+			for (int i = thisEntity.x - (thisVisionMap.length)/2; i <= thisEntity.x + (thisVisionMap.length)/2; i++) {
+				if (i < 0) {
+					i2 -= i;
+					i = -1;
+					continue;
+				} else if (i >= tiles.length) {
+					break;
+				}
+				int j2 = 0;
+				for (int j = thisEntity.y - (thisVisionMap.length)/2; j <= thisEntity.x + (thisVisionMap.length)/2; j++) {
+					if (j < 0) {
+						j2 -= j;
+						j = -1;
+						continue;
+					} else if (j >= tiles[i].length) {
+						break;
+					}
+					tiles[i][j].setVisible(tiles[i][j].isVisible() || thisVisionMap[i2][j2]);
+					j2++;
+				}
+				i2++;
+			}
+		}
+	}
+	
+	public void clearVisibility() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				tiles[i][j].setVisible(false);
+			}
+		}
 	}
 	
 	/**
@@ -325,9 +367,13 @@ public class GameMap {
 	 * @throws IOException 
 	 */
 	public static void main (String[] args) throws IOException { //Leave this at the bottom of the file please
-		int x = 7;
-		int y = 7;
-		//Tile[][] testTile = {{new ExampleTile1()}};
+		int x;
+		int y;
+		Scanner input = new Scanner(System.in);
+		System.out.print("Please input x and y: ");
+		x = input.nextInt();
+		y = input.nextInt();
+		
 		GameMap testMap = new GameMap(x, y);
 		
 		int rand = (int) (Math.random() + 1.5);
@@ -347,9 +393,9 @@ public class GameMap {
 		//System.out.println(testMap.toJson());
 		
 		String name = "randMap7x7";
-		testMap.toFile(name, false);
+		testMap.toFile(name, true);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
-		
+		input.close();
 	}
 }

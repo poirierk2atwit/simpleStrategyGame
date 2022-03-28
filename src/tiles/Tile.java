@@ -1,10 +1,10 @@
 package tiles;
 
 public abstract class Tile {
-	boolean isVisible;
+	boolean isVisible = false;
 	int health;
-	boolean traversable;
-	boolean destroyed;
+	boolean traversable = true;
+	boolean destroyed = false;
 	boolean isDestroyable;
 	int obscurity;
 	int elevation;
@@ -20,6 +20,14 @@ public abstract class Tile {
 		this.obscurity = obscurity;
 		this.elevation = elevation;
 		this.mobility = mobility;
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
+	}
+	
+	public void setVisible(boolean set) {
+		isVisible = set;
 	}
 	
 	/**

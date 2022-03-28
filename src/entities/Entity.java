@@ -3,18 +3,27 @@ package entities;
 import application.GameMap;
 
 public abstract class Entity {
-	int x;
-	int y;
+	public int x;
+	public int y;
 	int healthPoints;
 	int viewDistance;
 	int moveDistance;
 	int team;
 	boolean[][] visionMap;
 	
+	//Do not use, only for Gson
+	public Entity() {
+		
+	}
+	
 	public Entity(int x, int y, int team) {
 		this.x = x;
 		this.y = y;
 		this.team = team;
+	}
+	
+	public String toString() {
+		return "x:" + x + " y:" + y + " team:" + team;
 	}
 	
 	/**
@@ -32,7 +41,11 @@ public abstract class Entity {
 	 * @param m GameMap object
 	 * @return 2D boolean array
 	 */
-	abstract public boolean[][] setVisionMap(GameMap m);
+	abstract public boolean[][] setVisionMap(GameMap m, boolean toDisplay);
+	
+	public boolean[][] setVisionMap(GameMap m) {
+		return setVisionMap(m, false);
+	}
 	
 	/**
 	 * Returns the 2D boolean array vision map

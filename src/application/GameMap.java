@@ -4,18 +4,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import entities.Entity;
-import tiles.ExampleTile1;
-import tiles.Tile;
-import tiles.TileTypeAdapter;
+import entities.*;
+import tiles.*;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -23,10 +19,13 @@ import tiles.TileTypeAdapter;
  * @author poirierk2
  */
 public class GameMap {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Tile.class, new TileTypeAdapter()).create();
+	public static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Tile.class, new TileTypeAdapter()).registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
 	private Tile[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	
+	/**
+	 * For use by Gson.
+	 */
 	public GameMap() {
 		
 	}
@@ -34,11 +33,11 @@ public class GameMap {
 	/**
 	 * Creates a blank GameMap object with rows r and columns c
 	 * 
-	 * @param r rows
-	 * @param c columns
+	 * @param x columns
+	 * @param y rows
 	 */
-	public GameMap(int r, int c) {
-		tiles = new Tile[r][c];
+	public GameMap(int x, int y) {
+		tiles = new Tile[x][y];
 	}
 	
 	/**
@@ -49,8 +48,6 @@ public class GameMap {
 	public GameMap(Tile[][] tiles) {
 		this.tiles = tiles;
 	}
-	
-	//Assign new GameMap directly from the json as in GameMap map = gson.fromJson(data, GameMap.class);
 	
 	/**
 	 * Gets the Tile object at position x y.
@@ -74,6 +71,17 @@ public class GameMap {
 		tiles[x][y] = tile;
 	}
 	
+	public int length() {
+		return tiles.length;
+	}
+	
+	public int height() {
+		if (this.length() == 0) {
+			return 0;
+		}
+		return tiles[0].length;
+	}
+	
 	/**
 	 * Adds an arbitrary number of entity objects to the GameMap object from an ArrayList<Entitiy>
 	 * 
@@ -89,7 +97,7 @@ public class GameMap {
 	 * @param entity new Entity object
 	 */
 	public void addEntity(Entity entity) {
-		
+		entities.add(entity);
 	}
 	
 	/**
@@ -119,6 +127,11 @@ public class GameMap {
 	 * @return whether an entity is at position x y
 	 */
 	public boolean isEntitiy(int x, int y) {
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities.get(i).x == x && entities.get(i).y == y) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -312,19 +325,31 @@ public class GameMap {
 	 * @throws IOException 
 	 */
 	public static void main (String[] args) throws IOException { //Leave this at the bottom of the file please
-		//int x = 1;
-		//int y = 1;
-		Tile[][] testTile = {{new ExampleTile1()}};
-		GameMap testMap = new GameMap(testTile);
+		int x = 7;
+		int y = 7;
+		//Tile[][] testTile = {{new ExampleTile1()}};
+		GameMap testMap = new GameMap(x, y);
 		
-		//write tiles and entities in whatever way seems well enough
+		int rand = (int) (Math.random() + 1.5);
+		for (int i = 0; i < testMap.tiles.length; i++) {
+			for (int j = 0; j < testMap.tiles[i].length; j++) {
+				rand = (int) (Math.random() + 1.5);
+				if (rand == 1) {
+					testMap.setTile(i, j, new ExampleTile1());
+				} else {
+					testMap.setTile(i, j, new ExampleTile2());
+				}
+			}
+		}
 		
-		System.out.println(testMap.toJson());
+		testMap.addEntity(new Scout(3, 3, 0));
 		
-		String name = "mapTest2";
-		testMap.toFile(name, true);
+		//System.out.println(testMap.toJson());
 		
-		System.out.println("\n" + GameMap.fromFile(name).toJson());
+		String name = "randMap7x7";
+		testMap.toFile(name, false);
+		
+		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		
 	}
 }

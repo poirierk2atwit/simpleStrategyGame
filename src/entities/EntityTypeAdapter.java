@@ -13,7 +13,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class EntitiyTypeAdapter implements JsonSerializer<Entity>, JsonDeserializer<Entity> {
+public class EntityTypeAdapter implements JsonSerializer<Entity>, JsonDeserializer<Entity> {
 	  @Override
 	  public JsonElement serialize(Entity src, Type typeOfSrc, JsonSerializationContext context) {
 	      JsonObject result = new JsonObject();

@@ -7,14 +7,41 @@ import tiles.Tile;
 
 public class Main {
 
-	//Implement text based map viewing functions for debug
+	final static void printMap(String attribute, GameMap map) {
+		String toPrint = "";
+		for (int j = 0; j < map.height(); j++) {
+			for (int i = 0; i < map.length(); i++) {
+				if (attribute.equals("isVisible")) {
+					if (map.getTile(i, j).isVisible()) {
+						toPrint = "1";
+					} else {
+						toPrint = "0";
+					}
+				} else if (attribute.equals("health")) {
+					toPrint = "" + map.getTile(i, j).getHealth();
+				} else if (attribute.equals("isEntity")) {
+					toPrint = map.isEntitiy(i, j) ? "1" : "0";
+				}
+				
+				if (toPrint.length() == 1) {
+					System.out.print(toPrint + "   ");
+				} else if (toPrint.length() == 2) {
+					System.out.print(toPrint + "  ");
+				} else {
+					System.out.print(toPrint + " ");
+				}
+				
+			}
+			System.out.print("\n\n");
+		}
+	}
 	
 	//Implement test map
 	
 	public static void main(String[] args) {
 		//Load in textures
 		
-		GameMap currentMap = new GameMap(); 
+		GameMap currentMap; 
 		Player[] players = {new Player(0), new Player(1)};
 		
 		Scanner input = new Scanner(System.in);
@@ -25,12 +52,14 @@ public class Main {
 			if (thisInput.equals("Exit")) {
 				System.out.println("Goodbye.");
 				break;
+				
 			} else if (thisInput.equals("NewGame")) {
-				File[] files = new File("src/maps").listFiles();
+				File[] files = new File("src/maps/").listFiles();
 				String mapList = "Avalible maps: ";
 				for (int i = 0; i < files.length; i++) {
-					mapList += "\n  " + files[i].getName().split(".")[0];
+					mapList += "\n  " + files[i].getName().split("\\.", 2)[0];
 				}
+				
 				System.out.println(mapList + "\n");
 				while (true) {
 					System.out.print("Write a map name: ");
@@ -39,7 +68,8 @@ public class Main {
 					if (currentMap == null) {
 						System.out.println("Map not found.");
 					} else {
-						System.out.println("Playing on map " + mapName + ".");
+						System.out.println("Playing on map " + mapName + ".\n");
+						System.out.println(currentMap.getEntities().get(0).toString());
 						break;
 					}
 				}
@@ -87,7 +117,7 @@ public class Main {
 									currentMap.strike(players[i].getOperationPos(), players[i].getTeam());
 								}
 							} else if (coms[0].equals("display")) {
-								System.out.println("To implement");
+								printMap(coms[1], currentMap);
 							} else if (coms[0].equals("end")){
 								break;
 							} else if (coms[0].equals("help")) {

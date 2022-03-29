@@ -3,8 +3,6 @@ package application;
 import java.io.File;
 import java.util.Scanner;
 
-import tiles.Tile;
-
 public class Main {
 
 	final static void printMap(String attribute, GameMap map) {
@@ -69,6 +67,8 @@ public class Main {
 					}
 				}
 				
+				input.nextLine();
+				
 				//initialize players
 				
 				while (true) {
@@ -77,7 +77,6 @@ public class Main {
 						currentMap.fogOfWar(p);
 						System.out.println("Player " + p);
 						System.out.println("Input a command. Help for options. ");
-						input.nextLine();
 						
 						while (players[p].getMoves() > 0 && players[p].getStrikes() > 0) {
 							System.out.print(" > ");

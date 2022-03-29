@@ -10,8 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import entities.*;
-import tiles.*;
+import entities.Entity;
+import entities.EntityTypeAdapter;
+import entities.Scout;
+import tiles.ExampleTile1;
+import tiles.ExampleTile2;
+import tiles.Tile;
+import tiles.TileTypeAdapter;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -116,10 +121,10 @@ public class GameMap {
 	 * @return all Entity objects that match the team specified
 	 */
 	public ArrayList<Entity> getEntitiesTeam (int team) {
-		ArrayList<Entity> output = entities;
-		for (int i = output.size() - 1; i >= 0; i--) {
-			if (!output.get(i).isTeam(team)) {
-				output.remove(i);
+		ArrayList<Entity> output = new ArrayList<Entity>();
+		for (int i = entities.size() - 1; i >= 0; i--) {
+			if (entities.get(i).isTeam(team)) {
+				output.add(entities.get(i));
 			}
 		}
 		return output;
@@ -388,12 +393,13 @@ public class GameMap {
 			}
 		}
 		
-		testMap.addEntity(new Scout(3, 3, 0));
+		testMap.addEntity(new Scout(0, 0, 0));
+		testMap.addEntity(new Scout(5, 5, 0));
 		
 		//System.out.println(testMap.toJson());
 		
-		String name = "randMap7x7";
-		testMap.toFile(name, true);
+		String name = "randMap" + x + "x" + y;
+		testMap.toFile(name, false);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		input.close();

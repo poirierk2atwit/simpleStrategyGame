@@ -1,0 +1,1311 @@
+{
+  "tiles": [
+    [
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      }
+    ],
+    [
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile1",
+        "properties": {
+          "isVisible": false,
+          "health": 10,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": true,
+          "obscurity": 2,
+          "elevation": 1,
+          "mobility": 2
+        }
+      },
+      {
+        "type": "ExampleTile2",
+        "properties": {
+          "isVisible": false,
+          "health": 0,
+          "traversable": true,
+          "destroyed": false,
+          "isDestroyable": false,
+          "obscurity": 1,
+          "elevation": 0,
+          "mobility": 1
+        }
+      }
+    ]
+  ],
+  "entities": [
+    {
+      "type": "Scout",
+      "properties": {
+        "x": 3,
+        "y": 3,
+        "healthPoints": 0,
+        "viewDistance": 4,
+        "moveDistance": 0,
+        "team": 0
+      }
+    },
+    {
+      "type": "Scout",
+      "properties": {
+        "x": 6,
+        "y": 4,
+        "healthPoints": 0,
+        "viewDistance": 4,
+        "moveDistance": 0,
+        "team": 0
+      }
+    },
+    {
+      "type": "Scout",
+      "properties": {
+        "x": 5,
+        "y": 2,
+        "healthPoints": 0,
+        "viewDistance": 4,
+        "moveDistance": 0,
+        "team": 1
+      }
+    }
+  ]
+}

@@ -100,6 +100,7 @@ public abstract class Entity {
 				System.out.print("\n");
 			}
 		}
+		visionMap = output;
 		return output;
 	}
 	

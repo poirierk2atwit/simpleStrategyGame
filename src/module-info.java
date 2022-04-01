@@ -3,7 +3,7 @@ module Comp_Sci_Final {
 	requires javafx.controls;
 	requires java.desktop;
 	
-	opens application to com.google.gson,javafx.graphics, javafx.fxml;
+	opens application to com.google.gson,javafx.graphics,javafx.fxml;
 	opens tiles to com.google.gson;
 	opens entities to com.google.gson;
 }

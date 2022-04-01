@@ -5,16 +5,23 @@ import java.util.Scanner;
 
 public class Main {
 
+	/**
+	 * A debug function intended to explicitly show different
+	 * map attributes that would be visible in the final game.
+	 * 
+	 * @param attribute string of the attribute to be printed
+	 * @param map GameMap to be printed
+	 */
 	final static void printMap(String attribute, GameMap map) {
 		String toPrint = "";
 		for (int j = 0; j < map.height(); j++) {
 			for (int i = 0; i < map.length(); i++) {
 				if (attribute.equals("isVisible")) {
-					toPrint = map.getTile(i, j).isVisible() ? "1" : "0";
+					toPrint = map.isVisible(i, j) ? "1" : "0";
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(i, j).getHealth();
 				} else if (attribute.equals("isEntity")) {
-					toPrint = map.isEntitiy(i, j) ? "1" : "0";
+					toPrint = map.isEntitiy(i, j) && map.isVisible(i, j) ? "1" : "0";
 				}
 				
 				if (toPrint.length() == 1) {
@@ -67,12 +74,12 @@ public class Main {
 					}
 				}
 				
-				input.nextLine();
+				input.nextLine(); //Fix for a bug where the Scanner takes a previous new line as the first user command.
 				
 				//initialize players
 				
 				while (true) {
-					for (int p = 0; p < players.length; p++) {
+					for (int p = 0; p < players.length; p++) {						
 						players[p].newTurn();
 						currentMap.fogOfWar(p);
 						System.out.println("Player " + p);
@@ -86,7 +93,7 @@ public class Main {
 							//User interface will use send commands ig
 							
 							if (coms[0].equals("set")) {
-								if (coms[1].equals("selectedPos")) {
+								if (coms[1].equals("slcPos")) {
 									//don't worry about proper input; user interface will use proper values.
 									int x = Integer.parseInt(coms[2]);
 									int y = Integer.parseInt(coms[3]);
@@ -95,7 +102,7 @@ public class Main {
 									} else {
 										System.out.println("Can't select tile.");
 									}
-								} else if (coms[1].equals("operationPos")) {
+								} else if (coms[1].equals("opPos")) {
 									players[p].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
 								}
 							} else if (coms[0].equals("move")) {
@@ -117,7 +124,7 @@ public class Main {
 							} else if (coms[0].equals("end")){
 								break;
 							} else if (coms[0].equals("help")) {
-								System.out.println("set <selectedPos|operationPos> x y\nmove\nattack\nstrike\ndisplay\nend\nhelp\n");
+								System.out.println("set <slcPos|opPos> x y\nmove\nattack\nstrike\ndisplay <attribute>\nend\nhelp\n");
 							} else {
 								System.out.println("Unknown Command.");
 							}

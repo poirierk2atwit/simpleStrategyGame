@@ -2,13 +2,13 @@ package tiles;
 
 public abstract class Tile {
 	boolean isVisible = false;
-	int health;
 	boolean traversable = true;
 	boolean destroyed = false;
 	boolean isDestroyable;
 	int obscurity;
 	int elevation;
 	int mobility;
+	int health;
 	
 	public Tile () {
 		
@@ -40,12 +40,25 @@ public abstract class Tile {
 	}
 	
 	/**
+	 * Returns traversable
+	 * 
+	 * @return traversable
+	 */
+	public boolean isTraversable() {
+		return traversable;
+	}
+	
+	/**
 	 * Returns obscurity value
 	 * 
 	 * @return obscurity value
 	 */
 	public int getObscurity() {
 		return obscurity;
+	}
+	
+	public int getMobility() {
+		return mobility;
 	}
 	
 	/**

@@ -27,6 +27,7 @@ public class GameMap {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Tile.class, new TileTypeAdapter()).registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
 	private Tile[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private int[][] mobilityMap;
 	
 	/**
 	 * For use by Gson.
@@ -43,6 +44,7 @@ public class GameMap {
 	 */
 	public GameMap(int x, int y) {
 		tiles = new Tile[x][y];
+		mobilityMap = new int[x][y];
 	}
 	
 	/**
@@ -52,6 +54,9 @@ public class GameMap {
 	 */
 	public GameMap(Tile[][] tiles) {
 		this.tiles = tiles;
+		if (!(tiles.length == 0 || tiles[0].length == 0)) {
+			mobilityMap = new int[tiles.length][tiles[0].length];
+		}
 	}
 	
 	/**
@@ -65,6 +70,18 @@ public class GameMap {
 		return tiles[x][y];
 	}
 	
+	/**
+	 * Returns the isVisible method for the Tile at x y.
+	 * Shortcut for <GameMap>.getTile(x, y).isVisible();
+	 * 
+	 * @param x x position
+	 * @param y y position
+	 * @return the isVisible method for the Tile at x y
+	 */
+	public boolean isVisible(int x, int y) {
+		return getTile(x, y).isVisible();
+	}
+	
 	/**]
 	 * Sets the Tile object at position x y.
 	 * 
@@ -74,6 +91,7 @@ public class GameMap {
 	 */
 	public void setTile(int x, int y, Tile tile) {
 		tiles[x][y] = tile;
+		mobilityMap[x][y] = tile.getMobility();
 	}
 	
 	public int length() {
@@ -93,7 +111,9 @@ public class GameMap {
 	 * @param entities ArrayList of Entity objects.
 	 */
 	public void addEntity(ArrayList<Entity> entities) {
-		
+		for (int i = 0; i < entities.size(); i++) {
+			addEntity(entities.get(i));
+		}
 	}
 	
 	/**
@@ -102,7 +122,11 @@ public class GameMap {
 	 * @param entity new Entity object
 	 */
 	public void addEntity(Entity entity) {
-		entities.add(entity);
+		if (!(entity.x < 0 || entity.y < 0 || entity.x > this.length() || entity.y > this.height())) {
+			entities.add(entity);
+		} else {
+			throw new IndexOutOfBoundsException(); 
+		}
 	}
 	
 	/**
@@ -154,6 +178,11 @@ public class GameMap {
 	 * @return Entity object at position x y
 	 */
 	public Entity getEntity(int x, int y) {
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities.get(i).x == x && entities.get(i).y == y) {
+				return entities.get(i);
+			}
+		}
 		return null;
 	}
 	
@@ -165,7 +194,21 @@ public class GameMap {
 	 * @return True on success and false on failure.
 	 */
 	public boolean removeEntity(int x, int y) {
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities.get(i).x == x && entities.get(i).y == y) {
+				entities.remove(i);
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	public ArrayList<int[]> getPath(int[] start, int[] target) {
+		return Node.getPath(Node.aStar(start, target, mobilityMap));
+	}
+	
+	public ArrayList<int[]> getPath(int x1, int y1, int x2, int y2) {
+		return getPath(new int[] {x1, y1}, new int[] {x2, y2});
 	}
 	
 	/**
@@ -209,6 +252,10 @@ public class GameMap {
 	 * @return whether the operation could be run
 	 */
 	public boolean attack(int x1, int y1, int x2, int y2, int team) {
+		if (getEntity(x1, y1).canAttack(this, x2, y2)) {
+			getEntity(x1, y1).attack(this, x2, y2);
+			return true;
+		}
 		return false;
 	}
 	
@@ -227,6 +274,10 @@ public class GameMap {
 	 * @return whether the operation could be run
 	 */
 	public boolean move(int x1, int y1, int x2, int y2, int team) {
+		if (getEntity(x1, y1).canMove(this, x2, y2)) {
+			getEntity(x1, y1).move(this, x2, y2);
+			return true;
+		}
 		return false;
 	}
 	

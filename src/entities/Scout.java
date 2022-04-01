@@ -1,6 +1,7 @@
 package entities;
 
 import application.GameMap;
+import tiles.Tile;
 
 public class Scout extends Entity {
 
@@ -21,7 +22,6 @@ public class Scout extends Entity {
 
 	@Override
 	public boolean canMove(GameMap m, int x, int y) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -80,7 +80,10 @@ public class GameMap {
 	 * @param entities ArrayList of Entity objects.
 	 */
 	public void addEntity(ArrayList<Entity> entities) {
-		
+		int inSize = entities.size();
+		for (int i = 0;i <= inSize;i++) {
+			this.entities.add(entities.get(i));
+		}
 	}
 	
 	/**
@@ -89,7 +92,7 @@ public class GameMap {
 	 * @param entity new Entity object
 	 */
 	public void addEntity(Entity entity) {
-		
+		this.entities.add(entity);
 	}
 	
 	/**

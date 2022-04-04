@@ -13,7 +13,8 @@ public abstract class Entity {
 	boolean[][] visionMap;
 	
 	//Do not use, only for Gson
-	public Entity() {
+	@SuppressWarnings("unused")
+	protected Entity() {
 		
 	}
 	

@@ -1,8 +1,7 @@
 //adapted from https://stackabuse.com/graphs-in-java-a-star-algorithm/ by Darinka Zobenica
-package application;
+package utility;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 

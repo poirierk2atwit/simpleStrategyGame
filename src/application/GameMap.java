@@ -10,13 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import entities.Entity;
-import entities.EntityTypeAdapter;
-import entities.Scout;
-import tiles.ExampleTile1;
-import tiles.ExampleTile2;
-import tiles.Tile;
-import tiles.TileTypeAdapter;
+import entities.*;
+import tiles.*;
+import utility.Node;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -24,7 +20,8 @@ import tiles.TileTypeAdapter;
  * @author poirierk2
  */
 public class GameMap {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Tile.class, new TileTypeAdapter()).registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
+	public static Gson gson = new GsonBuilder().setPrettyPrinting().
+			registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
 	private Tile[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private int[][] mobilityMap;
@@ -32,7 +29,8 @@ public class GameMap {
 	/**
 	 * For use by Gson.
 	 */
-	public GameMap() {
+	@SuppressWarnings("unused")
+	private GameMap() {
 		
 	}
 	
@@ -430,19 +428,17 @@ public class GameMap {
 		x = input.nextInt();
 		y = input.nextInt();
 		
-		GameMap testMap = new GameMap(x, y);
+		Tile[][] map = {
+			{},
+			{},
+			{},
+			{}	
+		};
+		x = map.length;
+		y = map[0].length;
 		
-		int rand = (int) (Math.random() + 1.5);
-		for (int i = 0; i < testMap.tiles.length; i++) {
-			for (int j = 0; j < testMap.tiles[i].length; j++) {
-				rand = (int) (Math.random() + 1.5);
-				if (rand == 1) {
-					testMap.setTile(i, j, new ExampleTile1());
-				} else {
-					testMap.setTile(i, j, new ExampleTile2());
-				}
-			}
-		}
+		//GameMap testMap = new GameMap(x, y);
+		GameMap testMap = new GameMap(map);
 		
 		testMap.addEntity(new Scout(0, 0, 0));
 		testMap.addEntity(new Scout(5, 5, 0));

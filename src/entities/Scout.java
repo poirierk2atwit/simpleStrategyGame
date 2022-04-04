@@ -1,11 +1,11 @@
 package entities;
 
 import application.GameMap;
-import tiles.Tile;
 
 public class Scout extends Entity {
 
-	public Scout() {
+	@SuppressWarnings("unused")
+	private Scout() {
 		viewDistance = 4;
 	}
 	

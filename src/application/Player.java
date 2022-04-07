@@ -1,13 +1,16 @@
 package application;
 
+import java.util.ArrayList;
+
+import utility.Action;
+
 public class Player {
 	public static final int NUM_MOVES = 4;
-	public static final int NUM_STRIKES = 1;
 	int moves = NUM_MOVES;
-	int strikes = NUM_STRIKES;
 	int team;
 	int[] selectedPos = new int[2];
 	int[] operationPos = new int[2];
+	ArrayList<Action<Object, Boolean>> actionQueue = new ArrayList<Action<Object, Boolean>>();
 	
 	public Player (int team) {
 		this.team = team;
@@ -17,24 +20,23 @@ public class Player {
 		return moves;
 	}
 	
-	public int getStrikes() {
-		return strikes;
-	}
-	
 	public void resetMoves() {
 		moves = NUM_MOVES;
-	}
-	
-	public void resetStrikes() {
-		strikes = NUM_STRIKES;
 	}
 	
 	public boolean useMove() {
 		return moves-- > -1;
 	}
 	
-	public boolean useStrike() {
-		return strikes-- > -1;
+	public void addAction(Action<Object, Boolean> action) {
+		actionQueue.add(action);
+	}
+	
+	public Boolean doAction() {
+		if (actionQueue.size() == 0) {
+			return null;
+		}
+		return actionQueue.remove(0).exec();
 	}
 	
 	public void setSelectedPos(int x, int y) {
@@ -55,7 +57,7 @@ public class Player {
 	
 	public void newTurn() {
 		resetMoves();
-		resetStrikes();
+		actionQueue = new ArrayList<Action<Object, Boolean>>();
 		selectedPos = null;
 		operationPos = null;
 	}

@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -21,20 +22,35 @@ public class Main {
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(i, j).getHealth();
 				} else if (attribute.equals("isEntity")) {
-					toPrint = map.isEntitiy(i, j) && map.isVisible(i, j) ? "1" : "0";
+					toPrint = map.isEntity(i, j) && map.isVisible(i, j) ? "1" : "0";
+				} else if (attribute.equals("type")) {
+					toPrint = "";
+					for (String a : map.getTile(i, j).getName().split(" ")) {
+						toPrint += a.substring(0, 1);
+					}
+				} else if (attribute.equals("mobility")) {
+					toPrint = "" + map.getTile(i, j).getMobility();
+					if (toPrint.equals("10000")) {
+						toPrint = "-";
+					}
 				}
 				
-				if (toPrint.length() == 1) {
-					System.out.print(toPrint + "   ");
-				} else if (toPrint.length() == 2) {
-					System.out.print(toPrint + "  ");
-				} else {
-					System.out.print(toPrint + " ");
-				}
+				System.out.print(space(toPrint));
 				
 			}
 			System.out.print("\n\n");
 		}
+	}
+	
+	final static String space(String string) {
+		if (string.length() == 1) {
+			string = string + "   ";
+		} else if (string.length() == 2) {
+			string = string + "  ";
+		} else {
+			string = string + " ";
+		}
+		return string;
 	}
 	
 	//Implement test map
@@ -85,7 +101,7 @@ public class Main {
 						System.out.println("Player " + p);
 						System.out.println("Input a command. Help for options. ");
 						
-						while (players[p].getMoves() > 0 && players[p].getStrikes() > 0) {
+						while (players[p].getMoves() > 0) {
 							System.out.print(" > ");
 							String command = input.nextLine();
 							String[] coms = command.split(" ");
@@ -97,7 +113,7 @@ public class Main {
 									//don't worry about proper input; user interface will use proper values.
 									int x = Integer.parseInt(coms[2]);
 									int y = Integer.parseInt(coms[3]);
-									if (currentMap.isEntitiy(x, y) && currentMap.getEntity(x, y).isTeam(players[p].getTeam())) {
+									if (currentMap.isEntity(x, y) && currentMap.getEntity(x, y).isTeam(players[p].getTeam())) {
 										players[p].setSelectedPos(x, y);
 									} else {
 										System.out.println("Can't select tile.");
@@ -106,15 +122,39 @@ public class Main {
 									players[p].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
 								}
 							} else if (coms[0].equals("move")) {
-								if (!currentMap.move(players[p].getSelectedPos(), players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
+								int[] pos = players[p].getSelectedPos();
+								int[] target = players[p].getOperationPos();
+								ArrayList<int[]> path = currentMap.getPath(pos, target);
+								if (!currentMap.move(pos, target, players[p].getTeam()) ){//|| !players[p].useMove()) {
 									System.out.println("Cannot complete move.");
+								}
+								if (coms.length >= 2 && coms[1].equals("disp")) {
+									String toPrint;
+									for (int j = 0; j < currentMap.height(); j++) {
+										for (int i = 0; i < currentMap.length(); i++) {
+											if (i == pos[0] && j == pos[1]) {
+												toPrint = "S";
+											} else if (i == target[0] && j == target[1]) {
+												toPrint = "E";
+											} else {
+												toPrint = "_";
+												for (int[] a : path) {
+													if (i == a[0] && j == a[1]) {
+														toPrint = "-";
+													}
+												}
+											}
+											System.out.print(space(toPrint));
+										}
+										System.out.print("\n\n");
+									}
 								}
 							} else if (coms[0].equals("attack")) {
 								if (!currentMap.attack(players[p].getSelectedPos(), players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete attack.");
 								}
 							} else if (coms[0].equals("strike")) {
-								if (!currentMap.canStrike(players[p].getOperationPos(), players[p].getTeam()) || !players[p].useStrike()) {
+								if (!currentMap.canStrike(players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete strike.");
 								} else {
 									currentMap.strike(players[p].getOperationPos(), players[p].getTeam());

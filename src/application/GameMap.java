@@ -24,7 +24,19 @@ public class GameMap {
 			registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
 	private Tile[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private int[][] mobilityMap;
+	
+	static Tile[][] rotate(Tile[][] array) {
+		if (array.length == 0 || array[0].length == 0) return null;
+		Tile[][] output = new Tile[array[0].length][array.length];
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array[0].length; j++) {
+				int x = j;
+				int y = i;
+				output[x][y] = array[i][j];
+			}
+		}
+		return output;
+	}
 	
 	/**
 	 * For use by Gson.
@@ -42,7 +54,6 @@ public class GameMap {
 	 */
 	public GameMap(int x, int y) {
 		tiles = new Tile[x][y];
-		mobilityMap = new int[x][y];
 	}
 	
 	/**
@@ -51,10 +62,7 @@ public class GameMap {
 	 * @param tiles 2D array of Tile objects.
 	 */
 	public GameMap(Tile[][] tiles) {
-		this.tiles = tiles;
-		if (!(tiles.length == 0 || tiles[0].length == 0)) {
-			mobilityMap = new int[tiles.length][tiles[0].length];
-		}
+		this.tiles = rotate(tiles);
 	}
 	
 	/**
@@ -89,7 +97,6 @@ public class GameMap {
 	 */
 	public void setTile(int x, int y, Tile tile) {
 		tiles[x][y] = tile;
-		mobilityMap[x][y] = tile.getMobility();
 	}
 	
 	public int length() {
@@ -159,7 +166,7 @@ public class GameMap {
 	 * @param y y position
 	 * @return whether an entity is at position x y
 	 */
-	public boolean isEntitiy(int x, int y) {
+	public boolean isEntity(int x, int y) {
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i).x == x && entities.get(i).y == y) {
 				return true;
@@ -201,8 +208,26 @@ public class GameMap {
 		return false;
 	}
 	
+	public int[][] getMobilityMap(boolean omniscient) {
+		int[][] output = new int[length()][height()];
+		for (int i = 0; i < length(); i++) {
+			for (int j = 0; j < height(); j++) {
+				if ((isVisible(i, j) || omniscient) && isEntity(i, j)) {
+					output[i][j] = Tile.IMPASS;
+				} else {
+					output[i][j] = tiles[i][j].getMobility();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int[][] getMobilityMap() {
+		return getMobilityMap(false);
+	}
+	
 	public ArrayList<int[]> getPath(int[] start, int[] target) {
-		return Node.getPath(Node.aStar(start, target, mobilityMap));
+		return Node.getPath(Node.aStar(start, target, getMobilityMap()));
 	}
 	
 	public ArrayList<int[]> getPath(int x1, int y1, int x2, int y2) {
@@ -272,7 +297,7 @@ public class GameMap {
 	 * @return whether the operation could be run
 	 */
 	public boolean move(int x1, int y1, int x2, int y2, int team) {
-		if (getEntity(x1, y1).canMove(this, x2, y2)) {
+		if (getEntity(x1, y1).isTeam(team) && getEntity(x1, y1).canMove(this, x2, y2)) {
 			getEntity(x1, y1).move(this, x2, y2);
 			return true;
 		}
@@ -420,33 +445,47 @@ public class GameMap {
 	 * @param args ignored
 	 * @throws IOException 
 	 */
+	@SuppressWarnings("unused")
 	public static void main (String[] args) throws IOException { //Leave this at the bottom of the file please
 		int x;
 		int y;
 		Scanner input = new Scanner(System.in);
-		System.out.print("Please input x and y: ");
-		x = input.nextInt();
-		y = input.nextInt();
+		//System.out.print("Please input x and y: ");
+		//x = input.nextInt();
+		//y = input.nextInt();
+		
+		Tile o = Tile.TILE_SET.get("Ocean");
+		Tile g = Tile.TILE_SET.get("Grass");
+		Tile fg = Tile.TILE_SET.get("Grass Forest");
+		Tile b = Tile.TILE_SET.get("Beach");
+		Tile m = Tile.TILE_SET.get("Mountain");
+		Tile h = Tile.TILE_SET.get("Hill");
+		Tile fh = Tile.TILE_SET.get("Hill Forest");
 		
 		Tile[][] map = {
-			{},
-			{},
-			{},
-			{}	
+			{o, o, o, o, b, b, h, g,fg, g, b, b, o, o},
+			{o, o, b, b, g, g, g, g,fg,fg,fg, b, b, o},
+			{o, b, g, g, g, g, h,fg, g,fg, g, b, b, o},
+			{o, b, g, g, h, g,fg,fg,fg, g,fg, g, b, b},
+			{o, o, b, g, g,fh, g,fg,fg, g, g, g, b, b},
+			{o, o, h, h, g, h,fg,fh, g,fg, b, b, b, o},
+			{o, o, o, b, g, g,fg,fg, g, g, b, b, o, o},
+			{o, o, o, b, b, h,fg, g,fg, b, b, o, o, o}
 		};
-		x = map.length;
-		y = map[0].length;
 		
 		//GameMap testMap = new GameMap(x, y);
 		GameMap testMap = new GameMap(map);
+		x = testMap.length();
+		y = testMap.height();
 		
-		testMap.addEntity(new Scout(0, 0, 0));
-		testMap.addEntity(new Scout(5, 5, 0));
+		testMap.addEntity(new Scout(4, 3, 0));
+		testMap.addEntity(new Scout(8, 5, 0));
+		testMap.addEntity(new Scout(6, 7, 1));
 		
 		//System.out.println(testMap.toJson());
 		
-		String name = "randMap" + x + "x" + y;
-		testMap.toFile(name, false);
+		String name = "testMap" + x + "x" + y;
+		testMap.toFile(name, true);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		input.close();

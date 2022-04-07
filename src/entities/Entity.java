@@ -1,9 +1,14 @@
 package entities;
 
+import java.util.ArrayList;
+
 import application.GameMap;
 import tiles.Tile;
+import utility.Node;
+import utility.Trigger;
 
 public abstract class Entity {
+	
 	public int x;
 	public int y;
 	int healthPoints;
@@ -46,8 +51,8 @@ public abstract class Entity {
 	public boolean[][] setVisionMap(GameMap m, boolean toDisplay) {
 		Tile thisTile = m.getTile(x, y);
 		int maxViewDist = viewDistance + thisTile.getElevation();
-		int[][] viewMap = new int[maxViewDist*2+1][maxViewDist*2+1];
-		int[][] obscurityMap = new int[maxViewDist*2+1][maxViewDist*2+1];
+		double[][] viewMap = new double[maxViewDist*2+1][maxViewDist*2+1];
+		double[][] obscurityMap = new double[maxViewDist*2+1][maxViewDist*2+1];
 		boolean[][] output = new boolean[maxViewDist*2+1][maxViewDist*2+1];
 		for (int i = 0; i <= (2 * maxViewDist); i++) {
 			for (int j = 0; j <= (2 * maxViewDist); j++) {
@@ -126,7 +131,7 @@ public abstract class Entity {
 	 * @return the value of the target tile on the vision map, or false if out of range.
 	 */
 	public boolean canSee(int x, int y) {
-		return false;
+		return visionMap[x][y];
 	}
 	
 	/**
@@ -150,16 +155,6 @@ public abstract class Entity {
 	abstract public boolean canAttack(GameMap m, int x, int y);
 	
 	/**
-	 * Returns whether the entity can move to the tile x y
-	 * 
-	 * @param m GameMap object
-	 * @param x x of target tile
-	 * @param y y of target tile
-	 * @return whether the entity can move to the tile x y
-	 */
-	abstract public boolean canMove(GameMap m, int x, int y);
-	
-	/**
 	 * If possible, executes the entity's attack on the target tile.
 	 * 
 	 * @param m GameMap object
@@ -169,12 +164,44 @@ public abstract class Entity {
 	abstract public void attack(GameMap m, int x, int y);
 	
 	/**
+	 * Returns whether the entity can move to the tile x y
+	 * 
+	 * @param m GameMap object
+	 * @param x x of target tile
+	 * @param y y of target tile
+	 * @return whether the entity can move to the tile x y
+	 */
+	public boolean canMove(GameMap m, int x2, int y2) {
+		System.out.println(Node.moveCost(m.getPath(x, y, x2, y2)));
+		return Node.moveCost(m.getPath(x, y, x2, y2)) <= moveDistance && 
+				(!(m.isVisible(x2, y2) && m.isEntity(x2, y2))); 
+	}
+	
+	public boolean canMove(GameMap m, int x2, int y2, ArrayList<int[]> path) {
+		return Node.moveCost(path) <= moveDistance && 
+				!(m.isVisible(x2, y2) && m.isEntity(x2, y2)); 
+	}
+	
+	/**
 	 * If possible, executes the entity's movement to the target tile.
 	 * 
 	 * @param m GameMap object
 	 * @param x x of target tile
 	 * @param y y of target tile
 	 */
-	abstract public void move(GameMap m, int x, int y);
+	public void move(GameMap m, int x2, int y2) {
+		ArrayList<int[]> path = Node.getPath(Node.aStar(new int[] {x, y}, new int[] {x2, y2}, m.getMobilityMap(true)));
+		double moveDist = moveDistance;
+		while (path.size() > 0) {
+			int[] next = path.remove(0);
+			if (m.isEntity(next[0], next[1]) || moveDist - m.getTile(next[0], next[1]).getMobility() < 0) {
+				break;
+			} else {
+				moveDist -= m.getTile(next[0], next[1]).getMobility();
+				this.x = next[0];
+				this.y = next[1];
+			}
+		}
+	}
 	
 }

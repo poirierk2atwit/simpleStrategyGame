@@ -20,6 +20,7 @@ public class Node implements Comparable<Node> {
     // Evaluation functions
     public int f = Integer.MAX_VALUE;
     public int g = Integer.MAX_VALUE;
+    public int weight;
     // Hardcoded heuristic
     public int h; 
     public int[] pos;
@@ -57,24 +58,30 @@ public class Node implements Comparable<Node> {
     public static Node aStar(int[] start, int[] target, int[][] mobilityMap){
         PriorityQueue<Node> closedList = new PriorityQueue<>();
         PriorityQueue<Node> openList = new PriorityQueue<>();
+        Node[][] nodes = new Node[mobilityMap.length][mobilityMap[0].length];
 
-        Node first = new Node(start, target);
+        Node first = nodes[start[0]][start[1]] = new Node(start, target);
         first.g = mobilityMap[start[0]][start[1]];
         first.f = first.g + first.heuristic();
         openList.add(first);
 
         while(!openList.isEmpty()){
             Node n = openList.peek();
-            if(n.pos == target){
+            if(n.pos[0] == target[0] && n.pos[1] == target[1]){
                 return n;
             }
             
-            if(!openList.contains(n) && !closedList.contains(n)){
+            if(n.neighbors.size() == 0){
             	for (int i = 0; i < 4; i++) {
             		int[] x = {1, 0, -1, 0};
             		int[] y = {0, 1, 0, -1};
             		try {
-            			n.addBranch(mobilityMap[n.pos[0] + x[i]][n.pos[1] + y[i]], new Node(new int[]{n.pos[0] + x[i], n.pos[1] + y[i]}, target));
+            			if (!(nodes[n.pos[0] + x[i]][n.pos[1] + y[i]] == null)) {
+            				n.addBranch(mobilityMap[n.pos[0] + x[i]][n.pos[1] + y[i]], nodes[n.pos[0] + x[i]][n.pos[1] + y[i]]);
+            			} else {
+            				nodes[n.pos[0] + x[i]][n.pos[1] + y[i]] = new Node(new int[]{n.pos[0] + x[i], n.pos[1] + y[i]}, target);
+            				n.addBranch(mobilityMap[n.pos[0] + x[i]][n.pos[1] + y[i]], nodes[n.pos[0] + x[i]][n.pos[1] + y[i]]);
+            			}
             		} catch (Exception e) {
             		
             		}
@@ -89,6 +96,7 @@ public class Node implements Comparable<Node> {
                     m.parent = n;
                     m.g = totalWeight;
                     m.f = m.g + m.heuristic();
+                    m.weight = edge.weight;
                     openList.add(m);
                 } else {
                     if(totalWeight < m.g){
@@ -136,9 +144,17 @@ public class Node implements Comparable<Node> {
         }
         
         while(n.parent != null) {
-        	coordiantes.add(0, new int[] {n.pos[0], n.pos[1]});
+        	coordiantes.add(0, new int[] {n.pos[0], n.pos[1], n.weight});
         	n = n.parent;
         }
         return coordiantes;
+    }
+    
+    public static int moveCost(ArrayList<int[]> path) {
+    	int output = 0;
+    	for (int i = 0; i < path.size(); i++) {
+    		output += path.get(i)[2];
+    	}
+    	return output;
     }
 }

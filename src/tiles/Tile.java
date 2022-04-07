@@ -1,10 +1,8 @@
 package tiles;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class Tile {
 	public static final int IMPASS = 10000;
@@ -14,24 +12,27 @@ public class Tile {
 	boolean isTop = false;
 	boolean canStack = true;
 	String name = "GenericTile";
-	int obscurity;
+	double obscurity;
 	int elevation;
 	int mobility;
 	int health;
 	
+	@SuppressWarnings("serial")
 	public static ArrayList<Tile> bt = new ArrayList<Tile>() {
 		{
-			add(new Tile("Ocean", 0, 1, 0, IMPASS));
-			add(new Tile("Grass", 0, 1, 0, 1, true, false));
-			add(new Tile("Forest", 10, 2, 0, 1, true, true));
-			add(new Tile("Hill", 0, 1, 1, 2, true, false));
-			add(new Tile("Fort", 40, 3, 1, 3, true, true));
-			add(new Tile("Mountain", 0, IMPASS, 0, IMPASS));
-			add(new Tile("Tower", 20, 2, 2, 3, true, true));
-			add(new Tile("Beach", 0, 1, 0, 1));
+			//			  name, 		health, obscurity, elevation, mobility, canStack, isTop
+			add(new Tile("Ocean", 		0, 		0.6, 		0, 		IMPASS));
+			add(new Tile("Grass", 		0, 		1, 			0, 		1, 			true, 	false));
+			add(new Tile("Forest", 		10, 	0.8, 		0, 		1, 			true, 	true));
+			add(new Tile("Hill", 		0, 		1.5, 		1, 		2, 			true, 	false));
+			add(new Tile("Fort", 		40, 	1.2, 		1, 		3, 			true, 	true));
+			add(new Tile("Mountain",	0, 		IMPASS, 	0, 		IMPASS));
+			add(new Tile("Tower", 		20, 	1.5, 		2, 		3, 			true, 	true));
+			add(new Tile("Beach", 		0, 		0.8, 		0, 		1));
 		}
 	};
 	
+	@SuppressWarnings("serial")
 	public static final HashMap<String, Tile> TILE_SET = new HashMap<String, Tile>() {
 		{
 			put(bt.get(0).name, bt.get(0));
@@ -56,7 +57,7 @@ public class Tile {
 		
 	}
 	
-	public Tile (String name, int health, int obscurity, int elevation, int mobility) {
+	public Tile (String name, int health, double obscurity, int elevation, int mobility) {
 		this.name = name;
 		this.health = health;
 		if (this.health > 0) {
@@ -67,7 +68,7 @@ public class Tile {
 		this.mobility = mobility;
 	}
 	
-	public Tile (String name, int health, int obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
+	public Tile (String name, int health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
 		this.name = name;
 		this.health = health;
 		if (this.health > 0) {
@@ -130,7 +131,7 @@ public class Tile {
 	 * 
 	 * @return obscurity value
 	 */
-	public int getObscurity() {
+	public double getObscurity() {
 		return obscurity;
 	}
 	
@@ -166,14 +167,21 @@ public class Tile {
 	}
 	
 	/**
+	 * Returns name
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
 	 * for testing only
 	 * 
 	 * @param args ignored
 	 */
 	public static void main(String[] args) {
 		Iterator<Tile> testTiles = TILE_SET.values().iterator();
-		
-		System.out.println(Tile.stack(TILE_SET.get("Forest"), TILE_SET.get("Grass")).name);
 		
 		while (testTiles.hasNext()) {
 			System.out.print("" + testTiles.next().name);

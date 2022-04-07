@@ -42,7 +42,7 @@ public class Main {
 		}
 	}
 	
-	final static String space(String string) {
+	public final static String space(String string) {
 		if (string.length() == 1) {
 			string = string + "   ";
 		} else if (string.length() == 2) {

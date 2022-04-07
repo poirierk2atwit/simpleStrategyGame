@@ -3,11 +3,47 @@ package entities;
 import java.util.ArrayList;
 
 import application.GameMap;
+import application.Main;
 import tiles.Tile;
 import utility.Node;
 import utility.Trigger;
 
 public abstract class Entity {
+	public static ArrayList<int[]> directPath(int[] pos1, int[] pos2) {
+		ArrayList<int[]> output = new ArrayList<int[]>();
+		double length = pos2[0] - pos1[0];
+		double height = pos2[1] - pos1[1];
+		int signL = (length > 0) ? 1 : -1;
+		int signH = (height > 0) ? 1 : -1;
+		int x = pos1[0];
+		int y = pos1[1];
+		if (!(Math.abs(height) < 0.001) && Math.abs(length / height) < 1) {
+			double ratio = Math.abs(length / height);
+			double progress = (ratio * (Math.abs(height/2))) % 1;
+			for (int i = 0; i < Math.abs(height); i++) {
+				progress += ratio;
+				y += (1 * signH);
+				if (Math.abs(progress - 1) < 0.001 || progress > 1) {
+					x += (1 * signL);
+					progress -= 1;
+				}
+				output.add(new int[] {x, y});
+			}
+		} else {
+			double ratio = height / length;
+			double progress = (ratio * (Math.abs(length/2))) % 1;
+			for (int i = 0; i < Math.abs(length); i++) {
+				progress += ratio;
+				x += (1 * signL);
+				if (Math.abs(progress - 1) < 0.001 || progress > 1) {
+					y += (1 * signH);
+					progress -= 1;
+				}
+				output.add(new int[] {x, y});
+			}
+		}
+		return output;
+	}
 	
 	public int x;
 	public int y;
@@ -189,19 +225,36 @@ public abstract class Entity {
 	 * @param x x of target tile
 	 * @param y y of target tile
 	 */
-	public void move(GameMap m, int x2, int y2) {
-		ArrayList<int[]> path = Node.getPath(Node.aStar(new int[] {x, y}, new int[] {x2, y2}, m.getMobilityMap(true)));
-		double moveDist = moveDistance;
-		while (path.size() > 0) {
-			int[] next = path.remove(0);
-			if (m.isEntity(next[0], next[1]) || moveDist - m.getTile(next[0], next[1]).getMobility() < 0) {
-				break;
-			} else {
-				moveDist -= m.getTile(next[0], next[1]).getMobility();
-				this.x = next[0];
-				this.y = next[1];
-			}
-		}
-	}
+	abstract public void move(GameMap m, int x2, int y2);
 	
+	public static void main(String[] args) {
+		
+		/*
+		//DirectPath testing
+		int[] pos = new int[] {9, 9};
+		int[] target = new int[] {0, 0};
+		GameMap currentMap = new GameMap(10, 10);
+		ArrayList<int[]> path = directPath(pos, target);
+		
+		String toPrint;
+		for (int j = 0; j < currentMap.height(); j++) {
+			for (int i = 0; i < currentMap.length(); i++) {
+				if (i == pos[0] && j == pos[1]) {
+					toPrint = "S";
+				} else if (i == target[0] && j == target[1]) {
+					toPrint = "E";
+				} else {
+					toPrint = "_";
+					for (int[] a : path) {
+						if (i == a[0] && j == a[1]) {
+							toPrint = "-";
+						}
+					}
+				}
+				System.out.print(Main.space(toPrint));
+			}
+			System.out.print("\n\n");
+		}
+		*/
+	}
 }

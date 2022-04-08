@@ -1,0 +1,526 @@
+{
+  "tiles": [
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": true,
+        "isTop": false,
+        "canStack": false,
+        "name": "Grass Forest",
+        "obscurity": 1.8,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 10.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Ocean",
+        "obscurity": 0.6,
+        "elevation": 0,
+        "mobility": 10000,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Ocean",
+        "obscurity": 0.6,
+        "elevation": 0,
+        "mobility": 10000,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": true,
+        "isTop": false,
+        "canStack": false,
+        "name": "Grass Forest",
+        "obscurity": 1.8,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 10.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ],
+    [
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      },
+      {
+        "isVisible": false,
+        "destroyed": false,
+        "isDestroyable": false,
+        "isTop": false,
+        "canStack": true,
+        "name": "Grass",
+        "obscurity": 1.0,
+        "elevation": 0,
+        "mobility": 1,
+        "health": 0.0
+      }
+    ]
+  ],
+  "entities": [
+    {
+      "type": "Scout",
+      "properties": {
+        "x": 2,
+        "y": 2,
+        "healthPoints": 20.0,
+        "viewDistance": 4,
+        "moveDistance": 5,
+        "range": 6,
+        "team": 0
+      }
+    },
+    {
+      "type": "Scout",
+      "properties": {
+        "x": 5,
+        "y": 2,
+        "healthPoints": 20.0,
+        "viewDistance": 4,
+        "moveDistance": 5,
+        "range": 6,
+        "team": 1
+      }
+    }
+  ]
+}

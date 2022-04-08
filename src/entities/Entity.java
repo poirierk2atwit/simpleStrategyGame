@@ -19,7 +19,7 @@ public abstract class Entity {
 		int y = pos1[1];
 		if (!(Math.abs(height) < 0.001) && Math.abs(length / height) < 1) {
 			double ratio = Math.abs(length / height);
-			double progress = (ratio * (Math.abs(height/2))) % 1;
+			double progress = 0.5;
 			for (int i = 0; i < Math.abs(height); i++) {
 				progress += ratio;
 				y += (1 * signH);
@@ -31,7 +31,7 @@ public abstract class Entity {
 			}
 		} else {
 			double ratio = height / length;
-			double progress = (ratio * (Math.abs(length/2))) % 1;
+			double progress = 0.5;
 			for (int i = 0; i < Math.abs(length); i++) {
 				progress += ratio;
 				x += (1 * signL);
@@ -232,7 +232,7 @@ public abstract class Entity {
 		/*
 		//DirectPath testing
 		int[] pos = new int[] {9, 9};
-		int[] target = new int[] {0, 0};
+		int[] target = new int[] {0, 3};
 		GameMap currentMap = new GameMap(10, 10);
 		ArrayList<int[]> path = directPath(pos, target);
 		
@@ -244,10 +244,10 @@ public abstract class Entity {
 				} else if (i == target[0] && j == target[1]) {
 					toPrint = "E";
 				} else {
-					toPrint = "_";
+					toPrint = ".";
 					for (int[] a : path) {
 						if (i == a[0] && j == a[1]) {
-							toPrint = "-";
+							toPrint = "o";
 						}
 					}
 				}

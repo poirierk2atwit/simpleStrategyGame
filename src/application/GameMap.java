@@ -287,6 +287,45 @@ public class GameMap {
 	}
 	
 	/**
+	 * Deals damage to a point on the map
+	 * 
+	 * @param x x position
+	 * @param y y position
+	 * @param damage amount of damage
+	 * @param guarded whether or not the tile can take a portion of the damage.
+	 */
+	public void damage(int x, int y, double damage, boolean guarded) {
+		if (isEntity(x, y)) {
+			if (guarded) {
+				Tile tile = getTile(x, y);
+				double ratio = 1/(1 + tile.getObscurity());
+				double extra = 0;
+				double tileDamage = ratio * damage * tile.getObscurity();
+				if (tile.getHealth() < tileDamage) {
+					extra = tileDamage - tile.getHealth();
+				}
+				double entityDamage = (ratio * damage) + extra;
+				getEntity(x, y).healthPoints = getEntity(x, y).healthPoints - entityDamage;
+				tile.setHealth(tile.getHealth() - tileDamage);
+				if (tile.isDestroyed()) {
+					//implement destroying a tile
+				}
+			} else {
+				getEntity(x, y).healthPoints = getEntity(x, y).healthPoints - damage;
+			}
+			if (getEntity(x, y).isDead()) {
+				removeEntity(x, y);
+			}
+		} else {
+			
+		}
+	}
+
+	public void damage(int x, int y, double damage) {
+		damage(x, y, damage, true);
+	}
+	
+	/**
 	 * If there is an entity at x1 y1 of the correct team and entity.canMove() return true, runs the x1 y1 Entity object move method.
 	 * 
 	 * @param x1 x position of the mover
@@ -463,14 +502,11 @@ public class GameMap {
 		Tile fh = Tile.TILE_SET.get("Hill Forest");
 		
 		Tile[][] map = {
-			{o, o, o, o, b, b, h, g,fg, g, b, b, o, o},
-			{o, o, b, b, g, g, g, g,fg,fg,fg, b, b, o},
-			{o, b, g, g, g, g, h,fg, g,fg, g, b, b, o},
-			{o, b, g, g, h, g,fg,fg,fg, g,fg, g, b, b},
-			{o, o, b, g, g,fh, g,fg,fg, g, g, g, b, b},
-			{o, o, h, h, g, h,fg,fh, g,fg, b, b, b, o},
-			{o, o, o, b, g, g,fg,fg, g, g, b, b, o, o},
-			{o, o, o, b, b, h,fg, g,fg, b, b, o, o, o}
+			{g, g, g, g, g, g, g, g},
+			{g, g, g, g, g, g, g, g},
+			{g, g,fg, o, o,fg, g, g},
+			{g, g, g, g, g, g, g, g},
+			{g, g, g, g, g, g, g, g}
 		};
 		
 		//GameMap testMap = new GameMap(x, y);
@@ -478,14 +514,13 @@ public class GameMap {
 		x = testMap.length();
 		y = testMap.height();
 		
-		testMap.addEntity(new Scout(4, 3, 0));
-		testMap.addEntity(new Scout(8, 5, 0));
-		testMap.addEntity(new Scout(6, 7, 1));
+		testMap.addEntity(new Scout(2, 2, 0));
+		testMap.addEntity(new Scout(5, 2, 1));
 		
 		//System.out.println(testMap.toJson());
 		
-		String name = "testMap" + x + "x" + y;
-		testMap.toFile(name, true);
+		String name = "standoff";// + x + "x" + y;
+		testMap.toFile(name, false);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		input.close();

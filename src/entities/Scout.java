@@ -13,19 +13,30 @@ public class Scout extends Entity {
 	public Scout(int x, int y, int team) {
 		super(x, y, team);
 		viewDistance = 4;
-		moveDistance = 4;
+		moveDistance = 5;
+		range = 6;
+		healthPoints = 20;
 	}
 
 	@Override
-	public boolean canAttack(GameMap m, int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canAttack(GameMap m, int x2, int y2) {
+		return true;
 	}
 
+	//Scout deals 10 damage (guarded) when attacking
 	@Override
-	public void attack(GameMap m, int x, int y) {
-		// TODO Auto-generated method stub
-		
+	public void attack(GameMap m, int x2, int y2) {
+		ArrayList<int[]> path = directPath(new int[] {x, y}, new int[] {x2, y2});
+		int elevation = m.getTile(x, y).getElevation();
+		for (int r = range; r >= 0 ; r--) {
+			int[] next = path.remove(0);
+			if (m.isEntity(next[0], next[1]) && !m.getEntity(next[0], next[1]).isTeam(team) ||
+					(m.getTile(next[0], next[1]).getElevation() > elevation) ||
+					(path.size() == 0)) {
+				m.damage(next[0], next[1], 10);
+				break;
+			}
+		}
 	}
 	
 	public void move(GameMap m, int x2, int y2) {

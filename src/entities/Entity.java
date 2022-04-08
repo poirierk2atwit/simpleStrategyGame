@@ -47,9 +47,10 @@ public abstract class Entity {
 	
 	public int x;
 	public int y;
-	int healthPoints;
+	public double healthPoints;
 	int viewDistance;
 	int moveDistance;
+	int range;
 	int team;
 	boolean[][] visionMap;
 	

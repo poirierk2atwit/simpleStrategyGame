@@ -137,10 +137,10 @@ public class Main {
 											} else if (i == target[0] && j == target[1]) {
 												toPrint = "E";
 											} else {
-												toPrint = "_";
+												toPrint = ".";
 												for (int[] a : path) {
 													if (i == a[0] && j == a[1]) {
-														toPrint = "-";
+														toPrint = "o";
 													}
 												}
 											}

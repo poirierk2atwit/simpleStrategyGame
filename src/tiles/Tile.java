@@ -15,7 +15,7 @@ public class Tile {
 	double obscurity;
 	int elevation;
 	int mobility;
-	int health;
+	double health;
 	
 	@SuppressWarnings("serial")
 	public static ArrayList<Tile> bt = new ArrayList<Tile>() {
@@ -57,7 +57,7 @@ public class Tile {
 		
 	}
 	
-	public Tile (String name, int health, double obscurity, int elevation, int mobility) {
+	public Tile (String name, double health, double obscurity, int elevation, int mobility) {
 		this.name = name;
 		this.health = health;
 		if (this.health > 0) {
@@ -68,7 +68,7 @@ public class Tile {
 		this.mobility = mobility;
 	}
 	
-	public Tile (String name, int health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
+	public Tile (String name, double health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
 		this.name = name;
 		this.health = health;
 		if (this.health > 0) {
@@ -153,17 +153,20 @@ public class Tile {
 	 * 
 	 * @return health value
 	 */
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 	
 	/**
 	 * Sets health value to input health value
 	 * 
-	 * @param health new health value
+	 * @param d new health value
 	 */
-	public void setHealth(int health) {
-		this.health = health;
+	public void setHealth(double d) {
+		this.health = d;
+		if (health < 0) {
+			health = 0;
+		}
 	}
 	
 	/**

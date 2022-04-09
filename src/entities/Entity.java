@@ -6,47 +6,10 @@ import application.GameMap;
 import application.Main;
 import tiles.Tile;
 import utility.Node;
+import utility.Pair;
 import utility.Trigger;
 
-public abstract class Entity {
-	public static ArrayList<int[]> directPath(int[] pos1, int[] pos2) {
-		ArrayList<int[]> output = new ArrayList<int[]>();
-		double length = pos2[0] - pos1[0];
-		double height = pos2[1] - pos1[1];
-		int signL = (length > 0) ? 1 : -1;
-		int signH = (height > 0) ? 1 : -1;
-		int x = pos1[0];
-		int y = pos1[1];
-		if (!(Math.abs(height) < 0.001) && Math.abs(length / height) < 1) {
-			double ratio = Math.abs(length / height);
-			double progress = 0.5;
-			for (int i = 0; i < Math.abs(height); i++) {
-				progress += ratio;
-				y += (1 * signH);
-				if (Math.abs(progress - 1) < 0.001 || progress > 1) {
-					x += (1 * signL);
-					progress -= 1;
-				}
-				output.add(new int[] {x, y});
-			}
-		} else {
-			double ratio = height / length;
-			double progress = 0.5;
-			for (int i = 0; i < Math.abs(length); i++) {
-				progress += ratio;
-				x += (1 * signL);
-				if (Math.abs(progress - 1) < 0.001 || progress > 1) {
-					y += (1 * signH);
-					progress -= 1;
-				}
-				output.add(new int[] {x, y});
-			}
-		}
-		return output;
-	}
-	
-	public int x;
-	public int y;
+public abstract class Entity extends Pair {
 	public double health;
 	int viewDistance;
 	int moveDistance;
@@ -60,14 +23,13 @@ public abstract class Entity {
 		
 	}
 	
-	public Entity(int x, int y, int team) {
-		this.x = x;
-		this.y = y;
+	public Entity(Pair pos, int team) {
+		super (pos);
 		this.team = team;
 	}
 	
 	public String toString() {
-		return "x:" + x + " y:" + y + " team:" + team;
+		return "x:" + x() + " y:" + y() + " team:" + team;
 	}
 	
 	/**
@@ -86,7 +48,7 @@ public abstract class Entity {
 	 * @return 2D boolean array
 	 */
 	public boolean[][] setVisionMap(GameMap m, boolean toDisplay) {
-		Tile thisTile = m.getTile(x, y);
+		Tile thisTile = m.getTile(this);
 		int maxViewDist = viewDistance + thisTile.getElevation();
 		double[][] viewMap = new double[maxViewDist*2+1][maxViewDist*2+1];
 		double[][] obscurityMap = new double[maxViewDist*2+1][maxViewDist*2+1];
@@ -94,7 +56,7 @@ public abstract class Entity {
 		for (int i = 0; i <= (2 * maxViewDist); i++) {
 			for (int j = 0; j <= (2 * maxViewDist); j++) {
 				try {
-					obscurityMap[i][j] = m.getTile(i + x - maxViewDist, j + y - maxViewDist).getObscurity();
+					obscurityMap[i][j] = m.getTile(new Pair (i + x() - maxViewDist, j + y() - maxViewDist)).getObscurity();
 				} catch (Exception e) {
 					obscurityMap[i][j] = Integer.MIN_VALUE;
 				}
@@ -167,8 +129,8 @@ public abstract class Entity {
 	 * @param y y of target tile
 	 * @return the value of the target tile on the vision map, or false if out of range.
 	 */
-	public boolean canSee(int x, int y) {
-		return visionMap[x][y];
+	public boolean canSee(Pair pair) {
+		return pair.getFrom(visionMap);
 	}
 	
 	/**
@@ -208,7 +170,7 @@ public abstract class Entity {
 	 * @param y y of target tile
 	 * @return whether the entity is capable of attacking the tile x y
 	 */
-	abstract public boolean canAttack(GameMap m, int x, int y);
+	abstract public boolean canAttack(GameMap m, Pair pair);
 	
 	/**
 	 * If possible, executes the entity's attack on the target tile.
@@ -217,7 +179,7 @@ public abstract class Entity {
 	 * @param x x of target tile
 	 * @param y y of target tile
 	 */
-	abstract public void attack(GameMap m, int x, int y);
+	abstract public void attack(GameMap m, Pair pair);
 	
 	/**
 	 * Returns whether the entity can move to the tile x y
@@ -227,15 +189,14 @@ public abstract class Entity {
 	 * @param y y of target tile
 	 * @return whether the entity can move to the tile x y
 	 */
-	public boolean canMove(GameMap m, int x2, int y2) {
-		System.out.println(Node.moveCost(m.getPath(x, y, x2, y2)));
-		return Node.moveCost(m.getPath(x, y, x2, y2)) <= moveDistance && 
-				(!(m.isVisible(x2, y2) && m.isEntity(x2, y2))); 
+	public boolean canMove(GameMap m, Pair pos2) {
+		return Node.moveCost(m.getPath(this, pos2)) <= moveDistance && 
+				(!(m.isVisible(pos2) && m.isEntity(pos2))); 
 	}
 	
-	public boolean canMove(GameMap m, int x2, int y2, ArrayList<int[]> path) {
+	public boolean canMove(GameMap m, Pair pos2, Path path) {
 		return Node.moveCost(path) <= moveDistance && 
-				!(m.isVisible(x2, y2) && m.isEntity(x2, y2)); 
+				!(m.isVisible(pos2) && m.isEntity(pos2)); 
 	}
 	
 	/**
@@ -245,36 +206,36 @@ public abstract class Entity {
 	 * @param x x of target tile
 	 * @param y y of target tile
 	 */
-	abstract public void move(GameMap m, int x2, int y2);
+	abstract public void move(GameMap m, Pair pos2);
 	
 	public static void main(String[] args) {
 		
-		/*
 		//DirectPath testing
-		int[] pos = new int[] {9, 9};
-		int[] target = new int[] {0, 3};
+		Pair pos = new Pair(9, 9);
+		Pair target = new Pair(2, 8);
 		GameMap currentMap = new GameMap(10, 10);
-		ArrayList<int[]> path = directPath(pos, target);
+		Path path = directPath(pos, target);
 		
 		String toPrint;
 		for (int j = 0; j < currentMap.height(); j++) {
 			for (int i = 0; i < currentMap.length(); i++) {
-				if (i == pos[0] && j == pos[1]) {
+				Pair loc = new Pair (i, j);
+				if (pos.equals(loc)) {
 					toPrint = "S";
-				} else if (i == target[0] && j == target[1]) {
+				} else if (target.equals(loc)) {
 					toPrint = "E";
 				} else {
 					toPrint = ".";
-					for (int[] a : path) {
-						if (i == a[0] && j == a[1]) {
+					for (Pair a : path) {
+						if (loc.equals(a)) {
 							toPrint = "o";
 						}
 					}
 				}
 				System.out.print(Main.space(toPrint));
+				//System.out.print(pos + " " + target + " " + loc);
 			}
 			System.out.print("\n\n");
 		}
-		*/
 	}
 }

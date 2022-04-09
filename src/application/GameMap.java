@@ -12,7 +12,8 @@ import com.google.gson.JsonIOException;
 
 import entities.*;
 import tiles.*;
-import utility.Node;
+import utility.*;
+import utility.Pair.Path;
 
 /**
  * A class that handles a 2D array of Tiles and entities which sit on those tiles.
@@ -72,8 +73,8 @@ public class GameMap {
 	 * @param y y position
 	 * @return Tile object at x y
 	 */
-	public Tile getTile(int x, int y) {
-		return tiles[x][y];
+	public Tile getTile(Pair loc) {
+		return (Tile) loc.getFrom(tiles);
 	}
 	
 	/**
@@ -84,8 +85,8 @@ public class GameMap {
 	 * @param y y position
 	 * @return the isVisible method for the Tile at x y
 	 */
-	public boolean isVisible(int x, int y) {
-		return getTile(x, y).isVisible();
+	public boolean isVisible(Pair loc) {
+		return getTile(loc).isVisible();
 	}
 	
 	/**]
@@ -95,12 +96,12 @@ public class GameMap {
 	 * @param y y position
 	 * @param tile new Tile object
 	 */
-	public void setTile(int x, int y, Tile tile) {
-		tiles[x][y] = tile;
+	public void setTile(Pair loc, Tile tile) {
+		tiles[loc.x()][loc.y()] = tile;
 	}
 	
-	public void destroy(int x, int y) {
-		setTile(x, y, getTile(x, y).getDestroyedVersion());
+	public void destroy(Pair loc) {
+		setTile(loc, getTile(loc).getDestroyedVersion());
 	}
 	
 	public int length() {
@@ -131,7 +132,7 @@ public class GameMap {
 	 * @param entity new Entity object
 	 */
 	public void addEntity(Entity entity) {
-		if (!(entity.x < 0 || entity.y < 0 || entity.x > this.length() || entity.y > this.height())) {
+		if (!(entity.x() < 0 || entity.y() < 0 || entity.x() > this.length() || entity.y() > this.height())) {
 			entities.add(entity);
 		} else {
 			throw new IndexOutOfBoundsException(); 
@@ -170,9 +171,9 @@ public class GameMap {
 	 * @param y y position
 	 * @return whether an entity is at position x y
 	 */
-	public boolean isEntity(int x, int y) {
+	public boolean isEntity(Pair loc) {
 		for (int i = 0; i < entities.size(); i++) {
-			if (entities.get(i).x == x && entities.get(i).y == y) {
+			if (entities.get(i).equals(loc)) {
 				return true;
 			}
 		}
@@ -186,9 +187,9 @@ public class GameMap {
 	 * @param y y position
 	 * @return Entity object at position x y
 	 */
-	public Entity getEntity(int x, int y) {
+	public Entity getEntity(Pair loc) {
 		for (int i = 0; i < entities.size(); i++) {
-			if (entities.get(i).x == x && entities.get(i).y == y) {
+			if (entities.get(i).equals(loc)) {
 				return entities.get(i);
 			}
 		}
@@ -202,9 +203,9 @@ public class GameMap {
 	 * @param y y position
 	 * @return True on success and false on failure.
 	 */
-	public boolean removeEntity(int x, int y) {
+	public boolean removeEntity(Pair loc) {
 		for (int i = 0; i < entities.size(); i++) {
-			if (entities.get(i).x == x && entities.get(i).y == y) {
+			if (entities.get(i).equals(loc)) {
 				entities.remove(i);
 				return true;
 			}
@@ -216,7 +217,8 @@ public class GameMap {
 		int[][] output = new int[length()][height()];
 		for (int i = 0; i < length(); i++) {
 			for (int j = 0; j < height(); j++) {
-				if ((isVisible(i, j) || omniscient) && isEntity(i, j)) {
+				Pair loc = new Pair (i, j);
+				if ((isVisible(loc) || omniscient) && isEntity(loc)) {
 					output[i][j] = Tile.IMPASS;
 				} else {
 					output[i][j] = tiles[i][j].getMobility();
@@ -230,12 +232,8 @@ public class GameMap {
 		return getMobilityMap(false);
 	}
 	
-	public ArrayList<int[]> getPath(int[] start, int[] target) {
+	public Path getPath(Pair start, Pair target) {
 		return Node.getPath(Node.aStar(start, target, getMobilityMap()));
-	}
-	
-	public ArrayList<int[]> getPath(int x1, int y1, int x2, int y2) {
-		return getPath(new int[] {x1, y1}, new int[] {x2, y2});
 	}
 	
 	/**
@@ -246,26 +244,18 @@ public class GameMap {
 	 * @param team team of the striker
 	 * @return whether the strike does not hit an allied entity
 	 */
-	public boolean canStrike(int x, int y, int team) {
+	public boolean canStrike(Pair loc, int team) {
 		return false;
 	}
-	
-	public boolean canStrike(int[] pos, int team) {
-		return this.canStrike(pos[0], pos[1], team);
-	}
-	
+
 	/**
 	 * Executes an artillery strike on the position x y, damaging the tile and any entity present.
 	 * 
 	 * @param x x position
 	 * @param y y position
 	 */
-	public void strike(int x, int y, int team) {
+	public void strike(Pair loc, int team) {
 		
-	}
-	
-	public void strike(int[] pos, int team) {
-		this.strike(pos[0], pos[1], team);
 	}
 	
 	/**
@@ -278,16 +268,12 @@ public class GameMap {
 	 * @param team attacker team confirmation
 	 * @return whether the operation could be run
 	 */
-	public boolean attack(int x1, int y1, int x2, int y2, int team) {
-		if (getEntity(x1, y1).canAttack(this, x2, y2)) {
-			getEntity(x1, y1).attack(this, x2, y2);
+	public boolean attack(Pair pos1, Pair pos2, int team) {
+		if (getEntity(pos1).canAttack(this, pos2)) {
+			getEntity(pos1).attack(this, pos2);
 			return true;
 		}
 		return false;
-	}
-	
-	public boolean attack(int[] pos1, int[] pos2, int team) {
-		return this.attack(pos1[0], pos1[1], pos2[0], pos2[1], team);
 	}
 	
 	/**
@@ -298,10 +284,10 @@ public class GameMap {
 	 * @param damage amount of damage
 	 * @param guarded whether or not the tile can take a portion of the damage.
 	 */
-	public void damage(int x, int y, double damage, boolean guarded) {
-		Tile tile = getTile(x, y);
+	public void damage(Pair loc, double damage, boolean guarded) {
+		Tile tile = getTile(loc);
 		double tileDamage = 0;
-		if (isEntity(x, y)) {
+		if (isEntity(loc)) {
 			double entityDamage;
 			if (guarded) {	
 				double ratio = 1/(1 + tile.getObscurity());
@@ -314,19 +300,19 @@ public class GameMap {
 			} else {
 				entityDamage = damage;
 			}
-			if (getEntity(x, y).damage(entityDamage)) {
-				removeEntity(x, y);
+			if (getEntity(loc).damage(entityDamage)) {
+				removeEntity(loc);
 			}
 		} else {
 			tileDamage = damage;
 		}
 		if (tile.damage(tileDamage)) {
-			destroy(x, y);
+			destroy(loc);
 		}
 	}
 
-	public void damage(int x, int y, double damage) {
-		damage(x, y, damage, true);
+	public void damage(Pair loc, double damage) {
+		damage (loc, damage, true);
 	}
 	
 	/**
@@ -339,16 +325,12 @@ public class GameMap {
 	 * @param team mover team confirmation
 	 * @return whether the operation could be run
 	 */
-	public boolean move(int x1, int y1, int x2, int y2, int team) {
-		if (getEntity(x1, y1).isTeam(team) && getEntity(x1, y1).canMove(this, x2, y2)) {
-			getEntity(x1, y1).move(this, x2, y2);
+	public boolean move(Pair pos1, Pair pos2, int team) {
+		if (getEntity(pos1).isTeam(team) && getEntity(pos1).canMove(this, pos2)) {
+			getEntity(pos1).move(this, pos2);
 			return true;
 		}
 		return false;
-	}
-	
-	public boolean move(int[] pos1, int[] pos2, int team) {
-		return this.move(pos1[0], pos1[1], pos2[0], pos2[1], team);
 	}
 	
 	/**
@@ -363,7 +345,7 @@ public class GameMap {
 			Entity thisEntity = teamEntities.get(c);
 			boolean[][] thisVisionMap = thisEntity.setVisionMap(this);
 			int i2 = 0;
-			for (int i = thisEntity.x - (thisVisionMap.length)/2; i <= thisEntity.x + (thisVisionMap.length)/2; i++) {
+			for (int i = thisEntity.x() - (thisVisionMap.length)/2; i <= thisEntity.x() + (thisVisionMap.length)/2; i++) {
 				if (i < 0) {
 					i2 -= i;
 					i = -1;
@@ -372,7 +354,7 @@ public class GameMap {
 					break;
 				}
 				int j2 = 0;
-				for (int j = thisEntity.y - (thisVisionMap.length)/2; j <= thisEntity.x + (thisVisionMap.length)/2; j++) {
+				for (int j = thisEntity.y() - (thisVisionMap.length)/2; j <= thisEntity.x() + (thisVisionMap.length)/2; j++) {
 					if (j < 0) {
 						j2 -= j;
 						j = -1;
@@ -518,13 +500,13 @@ public class GameMap {
 		x = testMap.length();
 		y = testMap.height();
 		
-		testMap.addEntity(new Scout(2, 2, 0));
-		testMap.addEntity(new Scout(5, 2, 1));
+		testMap.addEntity(new Scout(new Pair (2, 2), 0));
+		testMap.addEntity(new Scout(new Pair (5, 2), 1));
 		
 		//System.out.println(testMap.toJson());
 		
 		String name = "standoff";// + x + "x" + y;
-		testMap.toFile(name, false);
+		testMap.toFile(name, true);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		input.close();

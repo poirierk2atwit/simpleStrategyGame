@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import application.GameMap;
 import utility.Node;
+import utility.Pair;
 
 public class Scout extends Entity {
 	@SuppressWarnings("unused")
 	private Scout() {
 	}
 	
-	public Scout(int x, int y, int team) {
-		super(x, y, team);
+	public Scout(Pair loc, int team) {
+		super(loc, team);
 		viewDistance = 4;
 		moveDistance = 5;
 		range = 6;
@@ -19,37 +20,37 @@ public class Scout extends Entity {
 	}
 
 	@Override
-	public boolean canAttack(GameMap m, int x2, int y2) {
+	public boolean canAttack(GameMap m, Pair loc) {
 		return true;
 	}
 
 	//Scout deals 10 damage (guarded) when attacking
 	@Override
-	public void attack(GameMap m, int x2, int y2) {
-		ArrayList<int[]> path = directPath(new int[] {x, y}, new int[] {x2, y2});
-		int elevation = m.getTile(x, y).getElevation();
+	public void attack(GameMap m, Pair loc) {
+		Path path = directPath(new Pair(this), loc);
+		int elevation = m.getTile(new Pair(this)).getElevation();
 		for (int r = range; r >= 0 ; r--) {
-			int[] next = path.remove(0);
-			if (m.isEntity(next[0], next[1]) && !m.getEntity(next[0], next[1]).isTeam(team) ||
-					(m.getTile(next[0], next[1]).getElevation() > elevation) ||
+			Pair next = path.pop();
+			if (m.isEntity(next) && !m.getEntity(next).isTeam(team) ||
+					(m.getTile(next).getElevation() > elevation) ||
 					(path.size() == 0)) {
-				m.damage(next[0], next[1], 10);
+				m.damage(next, 10);
 				break;
 			}
 		}
 	}
 	
-	public void move(GameMap m, int x2, int y2) {
-		ArrayList<int[]> path = Node.getPath(Node.aStar(new int[] {x, y}, new int[] {x2, y2}, m.getMobilityMap(true)));
+	public void move(GameMap m, Pair loc) {
+		Path path = Node.getPath(Node.aStar(new Pair(this), loc, m.getMobilityMap(true)));
 		double moveDist = moveDistance;
 		while (path.size() > 0) {
-			int[] next = path.remove(0);
-			if (m.isEntity(next[0], next[1]) || moveDist - m.getTile(next[0], next[1]).getMobility() < 0) {
+			Pair next = path.pop();
+			if (m.isEntity(next) || moveDist - m.getTile(next).getMobility() < 0) {
 				break;
 			} else {
-				moveDist -= m.getTile(next[0], next[1]).getMobility();
-				this.x = next[0];
-				this.y = next[1];
+				moveDist -= m.getTile(next).getMobility();
+				setX(next.x());
+				setY(next.y());
 			}
 		}
 	}

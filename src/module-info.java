@@ -6,4 +6,5 @@ module Comp_Sci_Final {
 	opens application to com.google.gson,javafx.graphics,javafx.fxml;
 	opens tiles to com.google.gson;
 	opens entities to com.google.gson;
+	opens utility to com.google.gson;
 }

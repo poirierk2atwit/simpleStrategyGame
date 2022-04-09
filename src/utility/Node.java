@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import utility.Pair.Path;
+
 /**
  * Node class by Darinka Zobenica adapted for a 2D array of integers 
  * without diagonal movement and without an initial node web.
@@ -23,10 +25,10 @@ public class Node implements Comparable<Node> {
     public int weight;
     // Hardcoded heuristic
     public int h; 
-    public int[] pos;
+    public Pair pos;
 
-    Node(int[] pos, int[] target){ 	
-    	this.h = Math.abs(target[0] - pos[0]) + Math.abs(target[1] - pos[1]);
+    Node(Pair pos, Pair target){ 	
+    	this.h = Math.abs(target.x() - pos.x()) + Math.abs(target.y() - pos.y());
     	this.pos = pos;
     	this.neighbors = new ArrayList<>();
     }
@@ -55,32 +57,33 @@ public class Node implements Comparable<Node> {
           return this.h;
     }
     
-    public static Node aStar(int[] start, int[] target, int[][] mobilityMap){
+    public static Node aStar(Pair start, Pair target, int[][] mobilityMap){
         PriorityQueue<Node> closedList = new PriorityQueue<>();
         PriorityQueue<Node> openList = new PriorityQueue<>();
         Node[][] nodes = new Node[mobilityMap.length][mobilityMap[0].length];
 
-        Node first = nodes[start[0]][start[1]] = new Node(start, target);
-        first.g = mobilityMap[start[0]][start[1]];
+        Node first = nodes[start.x()][start.y()] = new Node(start, target);
+        first.g = start.getFrom(mobilityMap);
         first.f = first.g + first.heuristic();
         openList.add(first);
 
         while(!openList.isEmpty()){
             Node n = openList.peek();
-            if(n.pos[0] == target[0] && n.pos[1] == target[1]){
+            if(n.pos.equals(target)){
                 return n;
             }
             
             if(n.neighbors.size() == 0){
+            	int[] offX = {1, 0, -1, 0};
+        		int[] offY = {0, 1, 0, -1};
             	for (int i = 0; i < 4; i++) {
-            		int[] x = {1, 0, -1, 0};
-            		int[] y = {0, 1, 0, -1};
+            		Pair offset = new Pair(offX[i], offY[i]);
             		try {
-            			if (!(nodes[n.pos[0] + x[i]][n.pos[1] + y[i]] == null)) {
-            				n.addBranch(mobilityMap[n.pos[0] + x[i]][n.pos[1] + y[i]], nodes[n.pos[0] + x[i]][n.pos[1] + y[i]]);
+            			if (!(n.pos.getFrom(nodes, offset) == null)) {
+            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (Node) n.pos.getFrom(nodes, offset));
             			} else {
-            				nodes[n.pos[0] + x[i]][n.pos[1] + y[i]] = new Node(new int[]{n.pos[0] + x[i], n.pos[1] + y[i]}, target);
-            				n.addBranch(mobilityMap[n.pos[0] + x[i]][n.pos[1] + y[i]], nodes[n.pos[0] + x[i]][n.pos[1] + y[i]]);
+            				nodes[n.pos.x() + offX[i]][n.pos.y() + offY[i]] = new Node(n.pos.combine(offset), target);
+            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (Node) n.pos.getFrom(nodes, offset));
             			}
             		} catch (Exception e) {
             		
@@ -128,15 +131,15 @@ public class Node implements Comparable<Node> {
         
         int index = 0;   
         while(n.parent != null) {
-        	System.out.print("" + index + ":(" + n.pos[0] + "," + n.pos[1] + "), ");
+        	System.out.print("" + index + ":(" + n.pos.x() + "," + n.pos.y() + "), ");
         	n = n.parent;
             index++;
         }
-        System.out.println("" + index + ":(" + n.pos[0] + "," + n.pos[1] + "), ");
+        System.out.println("" + index + ":(" + n.pos.x() + "," + n.pos.y() + "), ");
     }
     
-    public static ArrayList<int[]> getPath(Node target) {
-    	ArrayList<int[]> coordiantes = new ArrayList<int[]>(); 
+    public static Path getPath(Node target) {
+    	Path path = new Path(); 
     	Node n = target;
 
         if(n==null) {
@@ -144,16 +147,16 @@ public class Node implements Comparable<Node> {
         }
         
         while(n.parent != null) {
-        	coordiantes.add(0, new int[] {n.pos[0], n.pos[1], n.weight});
+        	path.add(0, new Pair (n.pos, n.weight));
         	n = n.parent;
         }
-        return coordiantes;
+        return path;
     }
     
-    public static int moveCost(ArrayList<int[]> path) {
+    public static int moveCost(Path path) {
     	int output = 0;
     	for (int i = 0; i < path.size(); i++) {
-    		output += path.get(i)[2];
+    		output += path.get(i).getAux();
     	}
     	return output;
     }

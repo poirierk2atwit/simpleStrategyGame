@@ -3,13 +3,14 @@ package application;
 import java.util.ArrayList;
 
 import utility.Action;
+import utility.Pair;
 
 public class Player {
 	public static final int NUM_MOVES = 2;
 	int moves = NUM_MOVES;
 	int team;
-	int[] selectedPos = new int[2];
-	int[] operationPos = new int[2];
+	Pair selectedPos = new Pair();
+	Pair operationPos = new Pair();
 	ArrayList<Action<Object, Boolean>> actionQueue = new ArrayList<Action<Object, Boolean>>();
 	
 	public Player (int team) {
@@ -39,19 +40,19 @@ public class Player {
 		return actionQueue.remove(0).exec();
 	}
 	
-	public void setSelectedPos(int x, int y) {
-		selectedPos = new int[] {x, y};
+	public void setSelectedPos(Pair loc) {
+		selectedPos = loc;
 	}
 	
-	public void setOperationPos(int x, int y) {
-		operationPos = new int[] {x, y};
+	public void setOperationPos(Pair loc) {
+		operationPos = loc;
 	}
 	
-	public int[] getSelectedPos() {
+	public Pair getSelectedPos() {
 		return selectedPos;
 	}
 	
-	public int[] getOperationPos() {
+	public Pair getOperationPos() {
 		return operationPos;
 	}
 	

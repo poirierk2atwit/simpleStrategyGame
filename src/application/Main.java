@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import utility.Pair;
+import utility.Pair.Path;
+
 public class Main {
 
 	/**
@@ -17,25 +20,26 @@ public class Main {
 		String toPrint = "";
 		for (int j = 0; j < map.height(); j++) {
 			for (int i = 0; i < map.length(); i++) {
+				Pair loc = new Pair (i, j);
 				if (attribute.equals("isVisible")) {
-					toPrint = map.isVisible(i, j) ? "1" : "0";
+					toPrint = map.isVisible(loc) ? "1" : "0";
 				} else if (attribute.equals("health")) {
-					toPrint = "" + map.getTile(i, j).getHealth();
+					toPrint = "" + map.getTile(loc).getHealth();
 				} else if (attribute.equals("isEntity")) {
-					toPrint = map.isEntity(i, j) && map.isVisible(i, j) ? "1" : "0";
+					toPrint = map.isEntity(loc) && map.isVisible(loc) ? "1" : "0";
 				} else if (attribute.equals("type")) {
 					toPrint = "";
-					for (String a : map.getTile(i, j).getName().split(" ")) {
+					for (String a : map.getTile(loc).getName().split(" ")) {
 						toPrint += a.substring(0, 1);
 					}
 				} else if (attribute.equals("mobility")) {
-					toPrint = "" + map.getTile(i, j).getMobility();
+					toPrint = "" + map.getTile(loc).getMobility();
 					if (toPrint.equals("10000")) {
 						toPrint = "-";
 					}
 				} else if (attribute.equals("entityHealth")) {
-					if (map.isEntity(i, j)) {
-						toPrint = "" + map.getEntity(i, j).getHealth();
+					if (map.isEntity(loc)) {
+						toPrint = "" + map.getEntity(loc).getHealth();
 					} else {
 						toPrint = ".";
 					}
@@ -62,11 +66,7 @@ public class Main {
 		return string;
 	}
 	
-	//Implement test map
-	
 	public static void main(String[] args) {
-		//Load in textures
-		
 		GameMap currentMap; 
 		Player[] players = {new Player(0), new Player(1)};
 		
@@ -120,20 +120,19 @@ public class Main {
 							if (coms[0].equals("set")) {
 								if (coms[1].equals("slcPos")) {
 									//don't worry about proper input; user interface will use proper values.
-									int x = Integer.parseInt(coms[2]);
-									int y = Integer.parseInt(coms[3]);
-									if (currentMap.isEntity(x, y) && currentMap.getEntity(x, y).isTeam(players[p].getTeam())) {
-										players[p].setSelectedPos(x, y);
+									Pair loc = new Pair (Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
+									if (currentMap.isEntity(loc) && currentMap.getEntity(loc).isTeam(players[p].getTeam())) {
+										players[p].setSelectedPos(loc);
 									} else {
 										System.out.println("Can't select tile.");
 									}
 								} else if (coms[1].equals("opPos")) {
-									players[p].setOperationPos(Integer.parseInt(coms[2]), Integer.parseInt(coms[3]));
+									players[p].setOperationPos(new Pair (Integer.parseInt(coms[2]), Integer.parseInt(coms[3])));
 								}
 							} else if (coms[0].equals("move")) {
-								int[] pos = players[p].getSelectedPos();
-								int[] target = players[p].getOperationPos();
-								ArrayList<int[]> path = currentMap.getPath(pos, target);
+								Pair pos = players[p].getSelectedPos();
+								Pair target = players[p].getOperationPos();
+								Path path = currentMap.getPath(pos, target);
 								if (!currentMap.move(pos, target, players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete move.");
 								}
@@ -141,14 +140,15 @@ public class Main {
 									String toPrint;
 									for (int j = 0; j < currentMap.height(); j++) {
 										for (int i = 0; i < currentMap.length(); i++) {
-											if (i == pos[0] && j == pos[1]) {
+											Pair loc = new Pair (i, j);
+											if (pos.equals(loc)) {
 												toPrint = "S";
-											} else if (i == target[0] && j == target[1]) {
+											} else if (target.equals(loc)) {
 												toPrint = "E";
 											} else {
 												toPrint = ".";
-												for (int[] a : path) {
-													if (i == a[0] && j == a[1]) {
+												for (Pair a : path) {
+													if (loc.equals(a)) {
 														toPrint = "o";
 													}
 												}
@@ -158,6 +158,7 @@ public class Main {
 										System.out.print("\n\n");
 									}
 								}
+								currentMap.fogOfWar(p);
 							} else if (coms[0].equals("attack")) {
 								if (!currentMap.attack(players[p].getSelectedPos(), players[p].getOperationPos(), players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete attack.");

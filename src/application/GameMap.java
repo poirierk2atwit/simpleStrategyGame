@@ -99,6 +99,10 @@ public class GameMap {
 		tiles[x][y] = tile;
 	}
 	
+	public void destroy(int x, int y) {
+		setTile(x, y, getTile(x, y).getDestroyedVersion());
+	}
+	
 	public int length() {
 		return tiles.length;
 	}
@@ -295,29 +299,29 @@ public class GameMap {
 	 * @param guarded whether or not the tile can take a portion of the damage.
 	 */
 	public void damage(int x, int y, double damage, boolean guarded) {
+		Tile tile = getTile(x, y);
+		double tileDamage = 0;
 		if (isEntity(x, y)) {
-			if (guarded) {
-				Tile tile = getTile(x, y);
+			double entityDamage;
+			if (guarded) {	
 				double ratio = 1/(1 + tile.getObscurity());
 				double extra = 0;
-				double tileDamage = ratio * damage * tile.getObscurity();
+				tileDamage = ratio * damage * tile.getObscurity();
 				if (tile.getHealth() < tileDamage) {
 					extra = tileDamage - tile.getHealth();
 				}
-				double entityDamage = (ratio * damage) + extra;
-				getEntity(x, y).healthPoints = getEntity(x, y).healthPoints - entityDamage;
-				tile.setHealth(tile.getHealth() - tileDamage);
-				if (tile.isDestroyed()) {
-					//implement destroying a tile
-				}
+				entityDamage = (ratio * damage) + extra;
 			} else {
-				getEntity(x, y).healthPoints = getEntity(x, y).healthPoints - damage;
+				entityDamage = damage;
 			}
-			if (getEntity(x, y).isDead()) {
+			if (getEntity(x, y).damage(entityDamage)) {
 				removeEntity(x, y);
 			}
 		} else {
-			
+			tileDamage = damage;
+		}
+		if (tile.damage(tileDamage)) {
+			destroy(x, y);
 		}
 	}
 

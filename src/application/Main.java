@@ -21,6 +21,9 @@ public class Main {
 					toPrint = map.isVisible(i, j) ? "1" : "0";
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(i, j).getHealth();
+					if (toPrint.length() >= 4) {
+						toPrint = toPrint.substring(0, 3);
+					}
 				} else if (attribute.equals("isEntity")) {
 					toPrint = map.isEntity(i, j) && map.isVisible(i, j) ? "1" : "0";
 				} else if (attribute.equals("type")) {
@@ -33,6 +36,8 @@ public class Main {
 					if (toPrint.equals("10000")) {
 						toPrint = "-";
 					}
+				} else if (attribute.equals("entityHealth")) {
+					
 				}
 				
 				System.out.print(space(toPrint));
@@ -125,7 +130,7 @@ public class Main {
 								int[] pos = players[p].getSelectedPos();
 								int[] target = players[p].getOperationPos();
 								ArrayList<int[]> path = currentMap.getPath(pos, target);
-								if (!currentMap.move(pos, target, players[p].getTeam()) ){//|| !players[p].useMove()) {
+								if (!currentMap.move(pos, target, players[p].getTeam()) || !players[p].useMove()) {
 									System.out.println("Cannot complete move.");
 								}
 								if (coms.length >= 2 && coms[1].equals("disp")) {

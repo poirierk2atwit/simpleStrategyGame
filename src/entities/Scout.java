@@ -15,7 +15,7 @@ public class Scout extends Entity {
 		viewDistance = 4;
 		moveDistance = 5;
 		range = 6;
-		healthPoints = 20;
+		health = 20;
 	}
 
 	@Override

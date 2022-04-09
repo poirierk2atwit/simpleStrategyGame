@@ -47,7 +47,7 @@ public abstract class Entity {
 	
 	public int x;
 	public int y;
-	public double healthPoints;
+	public double health;
 	int viewDistance;
 	int moveDistance;
 	int range;
@@ -76,7 +76,7 @@ public abstract class Entity {
 	 * @return whether the entity has health points below 1
 	 */
 	public boolean isDead() {
-		return healthPoints <= 0;
+		return health <= 0;
 	}
 	
 	/**
@@ -179,6 +179,25 @@ public abstract class Entity {
 	 */
 	public boolean isTeam(int team) {
 		return this.team == team;
+	}
+	
+	public double getHealth() {
+		return health;
+	}
+	
+	public void setHealth(double health) {
+		this.health = health;
+		if (health < 0) {
+			health = 0;
+		}
+	}
+	
+	public boolean damage(double damage) {
+		health -= damage;
+		if (isDead()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**

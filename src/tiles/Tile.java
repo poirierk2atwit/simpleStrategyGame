@@ -11,45 +11,73 @@ public class Tile {
 	boolean isDestroyable = false;
 	boolean isTop = false;
 	boolean canStack = true;
+	Tile destroyedVersion = null;
 	String name = "GenericTile";
 	double obscurity;
 	int elevation;
 	int mobility;
 	double health;
 	
-	@SuppressWarnings("serial")
-	public static ArrayList<Tile> bt = new ArrayList<Tile>() {
-		{
-			//			  name, 		health, obscurity, elevation, mobility, canStack, isTop
-			add(new Tile("Ocean", 		0, 		0.6, 		0, 		IMPASS));
-			add(new Tile("Grass", 		0, 		1, 			0, 		1, 			true, 	false));
-			add(new Tile("Forest", 		10, 	0.8, 		0, 		1, 			true, 	true));
-			add(new Tile("Hill", 		0, 		1.5, 		1, 		2, 			true, 	false));
-			add(new Tile("Fort", 		40, 	1.2, 		1, 		3, 			true, 	true));
-			add(new Tile("Mountain",	0, 		IMPASS, 	0, 		IMPASS));
-			add(new Tile("Tower", 		20, 	1.5, 		2, 		3, 			true, 	true));
-			add(new Tile("Beach", 		0, 		0.8, 		0, 		1));
+	private static class DestroyedTile extends Tile {
+		public final String replacing;
+		
+		public DestroyedTile (String replacing, double obscurity, int elevation, int mobility) {
+			super ("Destroyed " + replacing, 0, obscurity, elevation, mobility, true, true);
+			this.replacing = replacing;
 		}
-	};
+	}
 	
 	@SuppressWarnings("serial")
 	public static final HashMap<String, Tile> TILE_SET = new HashMap<String, Tile>() {
+		ArrayList<DestroyedTile> dt = new ArrayList<DestroyedTile>() {
+			{
+				add(new DestroyedTile("Forest", 	0.3, 		0,		1));
+				add(new DestroyedTile("Fort", 		0.6, 		0,		2));
+				add(new DestroyedTile("Tower", 		0.5, 		0,		2));
+			}
+		};
+		ArrayList<Tile> bt = new ArrayList<Tile>() {
+			{
+				//			  name, 		health, obscurity, elevation, mobility, canStack, isTop
+				add(new Tile("Ocean", 		0, 		0.6, 		0, 		IMPASS));
+				add(new Tile("Grass", 		0, 		1, 			0, 		1, 			true, 	false));
+				add(new Tile("Forest", 		10, 	0.8, 		0, 		1, 			true, 	true));
+				add(new Tile("Hill", 		0, 		1.5, 		1, 		2, 			true, 	false));
+				add(new Tile("Fort", 		40, 	1.2, 		1, 		3, 			true, 	true));
+				add(new Tile("Mountain",	0, 		IMPASS, 	0, 		IMPASS));
+				add(new Tile("Tower", 		20, 	1.5, 		2, 		3, 			true, 	true));
+				add(new Tile("Beach", 		0, 		0.8, 		0, 		1));
+			}
+		};
 		{
-			put(bt.get(0).name, bt.get(0));
-			put(bt.get(1).name, bt.get(1));
-			put(bt.get(2).name, bt.get(2));
-			put(bt.get(3).name, bt.get(3));
-			put(bt.get(4).name, bt.get(4));
-			put(bt.get(5).name, bt.get(5));
-			put(bt.get(6).name, bt.get(6));
-			put(bt.get(7).name, bt.get(7));
-			put(Tile.stack(bt.get(2), bt.get(1)).name, Tile.stack(bt.get(2), bt.get(1)));
-			put(Tile.stack(bt.get(2), bt.get(3)).name, Tile.stack(bt.get(2), bt.get(3)));
-			put(Tile.stack(bt.get(4), bt.get(1)).name, Tile.stack(bt.get(4), bt.get(1)));
-			put(Tile.stack(bt.get(4), bt.get(3)).name, Tile.stack(bt.get(4), bt.get(3)));
-			put(Tile.stack(bt.get(6), bt.get(1)).name, Tile.stack(bt.get(6), bt.get(1)));
-			put(Tile.stack(bt.get(6), bt.get(3)).name, Tile.stack(bt.get(6), bt.get(3)));
+			ArrayList<Integer> bottoms = new ArrayList<Integer>();
+			ArrayList<Integer> tops = new ArrayList<Integer>();
+			for (int i = 0; i < bt.size(); i++) {
+				for (DestroyedTile d : dt) {
+					if (bt.get(i).name == d.replacing) {
+						bt.get(i).setDestroyedVersion(d);
+					}
+				}
+				if (bt.get(i).canStack) {
+					if (bt.get(i).isTop) {
+						tops.add(i);
+					} else {
+						bottoms.add(i);
+						put(bt.get(i).name, bt.get(i));
+					}
+				} else {
+					put(bt.get(i).name, bt.get(i));
+				}
+			}
+			
+			for (int i : tops) {
+				for (int j : bottoms) {
+					Tile tile = new Tile(bt.get(i), bt.get(j));
+					put(tile.name, tile);
+				}
+			}
 		}
+		//ngl longest variable declaration I've ever written.
 	};
 	
 	@SuppressWarnings("unused")
@@ -91,18 +119,20 @@ public class Tile {
 			this.obscurity = top.obscurity + bottom.obscurity;
 			this.elevation = top.elevation + bottom.elevation;
 			this.mobility = top.mobility + bottom.mobility - 1;
+			if (!(top.destroyedVersion == null)) {
+				this.destroyedVersion = new Tile(top.destroyedVersion, bottom);
+			}
 		} else {
 			this.name = null;
 		}
 	}
 	
-	public static Tile stack(Tile top, Tile bottom) {
-		Tile stack = new Tile (top, bottom);
-		if (stack.name == null) {
-			return null;
-		} else {
-			return stack;
-		}
+	private void setDestroyedVersion(Tile tile) {
+		destroyedVersion = tile;
+	}
+	
+	public Tile getDestroyedVersion() {
+		return destroyedVersion;
 	}
 	
 	public Tile copy() {
@@ -167,6 +197,14 @@ public class Tile {
 		if (health < 0) {
 			health = 0;
 		}
+	}
+
+	public boolean damage(double damage) {
+		health -= damage;
+		if (isDestroyed()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**

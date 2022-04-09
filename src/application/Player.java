@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import utility.Action;
 
 public class Player {
-	public static final int NUM_MOVES = 4;
+	public static final int NUM_MOVES = 2;
 	int moves = NUM_MOVES;
 	int team;
 	int[] selectedPos = new int[2];

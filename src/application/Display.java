@@ -1,5 +1,6 @@
 package application;
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -24,7 +25,6 @@ public class Display extends JPanel {
 		for (int i = 0; i < cols + 1; i++) {
 			grid.drawLine(X + i * Side, Y, X + i * Side, Y + rows * Side);
 	}
-
+		
 		}
-
 }

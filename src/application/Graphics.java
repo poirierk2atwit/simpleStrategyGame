@@ -1,5 +1,9 @@
 package application;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Graphics {
 
@@ -13,6 +17,7 @@ public class Graphics {
 		
 		frame.setVisible(true);
 		frame.setResizable(false);
-	}
 
+	}
 }
+

@@ -27,5 +27,4 @@ public class Display extends JPanel {
 	}
 		
 		}
-
 }

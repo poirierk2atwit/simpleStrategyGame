@@ -1,25 +1,150 @@
 package tiles;
 
-public abstract class Tile {
-	boolean isVisible;
-	int health;
-	boolean traversable;
-	boolean destroyed;
-	boolean isDestroyable;
-	int obscurity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class Tile {
+	public static final int IMPASS = 10000;
+	boolean isVisible = false;
+	boolean destroyed = false;
+	boolean isDestroyable = false;
+	boolean isTop = false;
+	boolean canStack = true;
+	Tile destroyedVersion = null;
+	String name = "GenericTile";
+	double obscurity;
 	int elevation;
 	int mobility;
+	double health;
 	
-	public Tile () {
+	private static class DestroyedTile extends Tile {
+		public final String replacing;
+		
+		public DestroyedTile (String replacing, double obscurity, int elevation, int mobility) {
+			super ("Destroyed " + replacing, 0, obscurity, elevation, mobility, true, true);
+			this.replacing = replacing;
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	public static final HashMap<String, Tile> TILE_SET = new HashMap<String, Tile>() {
+		ArrayList<DestroyedTile> dt = new ArrayList<DestroyedTile>() {
+			{
+				add(new DestroyedTile("Forest", 	0.3, 		0,		1));
+				add(new DestroyedTile("Fort", 		0.6, 		0,		2));
+				add(new DestroyedTile("Tower", 		0.5, 		0,		2));
+			}
+		};
+		ArrayList<Tile> bt = new ArrayList<Tile>() {
+			{
+				//			  name, 		health, obscurity, elevation, mobility, canStack, isTop
+				add(new Tile("Ocean", 		0, 		0.6, 		0, 		IMPASS));
+				add(new Tile("Grass", 		0, 		1, 			0, 		1, 			true, 	false));
+				add(new Tile("Forest", 		10, 	0.8, 		0, 		1, 			true, 	true));
+				add(new Tile("Hill", 		0, 		1.5, 		1, 		2, 			true, 	false));
+				add(new Tile("Fort", 		40, 	1.2, 		1, 		3, 			true, 	true));
+				add(new Tile("Mountain",	0, 		IMPASS, 	0, 		IMPASS));
+				add(new Tile("Tower", 		20, 	1.5, 		2, 		3, 			true, 	true));
+				add(new Tile("Beach", 		0, 		0.8, 		0, 		1));
+			}
+		};
+		{
+			ArrayList<Integer> bottoms = new ArrayList<Integer>();
+			ArrayList<Integer> tops = new ArrayList<Integer>();
+			for (int i = 0; i < bt.size(); i++) {
+				for (DestroyedTile d : dt) {
+					if (bt.get(i).name == d.replacing) {
+						bt.get(i).setDestroyedVersion(d);
+					}
+				}
+				if (bt.get(i).canStack) {
+					if (bt.get(i).isTop) {
+						tops.add(i);
+					} else {
+						bottoms.add(i);
+						put(bt.get(i).name, bt.get(i));
+					}
+				} else {
+					put(bt.get(i).name, bt.get(i));
+				}
+			}
+			
+			for (int i : tops) {
+				for (int j : bottoms) {
+					Tile tile = new Tile(bt.get(i), bt.get(j));
+					put(tile.name, tile);
+				}
+			}
+		}
+		//ngl longest variable declaration I've ever written.
+	};
+	
+	@SuppressWarnings("unused")
+	private Tile () {
 		
 	}
 	
-	public Tile (int health, boolean isDestroyable, int obscurity, int elevation, int mobility) {
+	public Tile (String name, double health, double obscurity, int elevation, int mobility) {
+		this.name = name;
 		this.health = health;
-		this.isDestroyable = isDestroyable;
+		if (this.health > 0) {
+			this.isDestroyable = true;
+		}
 		this.obscurity = obscurity;
 		this.elevation = elevation;
 		this.mobility = mobility;
+	}
+	
+	public Tile (String name, double health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
+		this.name = name;
+		this.health = health;
+		if (this.health > 0) {
+			this.isDestroyable = true;
+		}
+		this.obscurity = obscurity;
+		this.elevation = elevation;
+		this.mobility = mobility;
+		this.isTop = isTop;
+		this.canStack = canStack;
+	}
+	
+	private Tile (Tile top, Tile bottom) {
+		if (top.canStack && bottom.canStack && top.isTop && !bottom.isTop) {
+			this.name = "" + bottom.name + " " + top.name;
+			this.health = top.health + bottom.health;
+			this.isDestroyable = top.isDestroyable || bottom.isDestroyable;
+			this.isTop = false;
+			this.canStack = false;
+			this.obscurity = top.obscurity + bottom.obscurity;
+			this.elevation = top.elevation + bottom.elevation;
+			this.mobility = top.mobility + bottom.mobility - 1;
+			if (!(top.destroyedVersion == null)) {
+				this.destroyedVersion = new Tile(top.destroyedVersion, bottom);
+			}
+		} else {
+			this.name = null;
+		}
+	}
+	
+	private void setDestroyedVersion(Tile tile) {
+		destroyedVersion = tile;
+	}
+	
+	public Tile getDestroyedVersion() {
+		return destroyedVersion;
+	}
+	
+	public Tile copy() {
+		return new Tile(this.name, this.health, this.obscurity, this.elevation, this.mobility, this.canStack, this.isTop);
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
+	}
+	
+	public void setVisible(boolean set) {
+		isVisible = set;
 	}
 	
 	/**
@@ -36,8 +161,12 @@ public abstract class Tile {
 	 * 
 	 * @return obscurity value
 	 */
-	public int getObscurity() {
+	public double getObscurity() {
 		return obscurity;
+	}
+	
+	public int getMobility() {
+		return mobility;
 	}
 	
 	/**
@@ -54,16 +183,51 @@ public abstract class Tile {
 	 * 
 	 * @return health value
 	 */
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 	
 	/**
 	 * Sets health value to input health value
 	 * 
-	 * @param health new health value
+	 * @param d new health value
 	 */
-	public void setHealth(int health) {
-		this.health = health;
+	public void setHealth(double d) {
+		this.health = d;
+		if (health < 0) {
+			health = 0;
+		}
+	}
+
+	public boolean damage(double damage) {
+		health -= damage;
+		if (isDestroyed()) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns name
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * for testing only
+	 * 
+	 * @param args ignored
+	 */
+	public static void main(String[] args) {
+		Iterator<Tile> testTiles = TILE_SET.values().iterator();
+		
+		while (testTiles.hasNext()) {
+			System.out.print("" + testTiles.next().name);
+			if (testTiles.hasNext()) System.out.print(", ");
+		}
+		System.out.print("\n");
 	}
 }

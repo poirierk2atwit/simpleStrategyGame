@@ -21,9 +21,6 @@ public class Main {
 					toPrint = map.isVisible(i, j) ? "1" : "0";
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(i, j).getHealth();
-					if (toPrint.length() >= 4) {
-						toPrint = toPrint.substring(0, 3);
-					}
 				} else if (attribute.equals("isEntity")) {
 					toPrint = map.isEntity(i, j) && map.isVisible(i, j) ? "1" : "0";
 				} else if (attribute.equals("type")) {
@@ -37,7 +34,11 @@ public class Main {
 						toPrint = "-";
 					}
 				} else if (attribute.equals("entityHealth")) {
-					
+					if (map.isEntity(i, j)) {
+						toPrint = "" + map.getEntity(i, j).getHealth();
+					} else {
+						toPrint = ".";
+					}
 				}
 				
 				System.out.print(space(toPrint));
@@ -48,6 +49,9 @@ public class Main {
 	}
 	
 	public final static String space(String string) {
+		if (string.length() >= 4) {
+			string = string.substring(0, 3);
+		}
 		if (string.length() == 1) {
 			string = string + "   ";
 		} else if (string.length() == 2) {

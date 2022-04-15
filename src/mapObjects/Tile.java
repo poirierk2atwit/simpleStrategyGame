@@ -1,18 +1,29 @@
-package tiles;
+package mapObjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import application.ImageHandler;
+import javafx.scene.Parent;
+import javafx.scene.layout.StackPane;
+
 public class Tile {
+	private static HashMap<String, ImageHandler> utility = new HashMap<String, ImageHandler>();
+	private static boolean setUp = false;
+	
 	public static final int IMPASS = 10000;
+	transient ImageHandler baseImage = null;
+	transient ImageHandler topImage = null;
+	transient StackPane stackPane = new StackPane();
+	transient ImageHandler visionImage = null;
 	boolean isVisible = false;
 	boolean destroyed = false;
 	boolean isDestroyable = false;
 	boolean isTop = false;
 	boolean canStack = true;
 	Tile destroyedVersion = null;
-	String name = "GenericTile";
+	String name = "Generic";
 	double obscurity;
 	int elevation;
 	int mobility;
@@ -22,13 +33,14 @@ public class Tile {
 		public final String replacing;
 		
 		public DestroyedTile (String replacing, double obscurity, int elevation, int mobility) {
-			super ("Destroyed " + replacing, 0, obscurity, elevation, mobility, true, true);
+			super ("Destroyed-" + replacing, 0, obscurity, elevation, mobility, true, true);
 			this.replacing = replacing;
 		}
 	}
 	
 	@SuppressWarnings("serial")
-	public static final HashMap<String, Tile> TILE_SET = new HashMap<String, Tile>() {
+	private static final HashMap<String, Tile> TILE_SET = new HashMap<String, Tile>() {
+
 		ArrayList<DestroyedTile> dt = new ArrayList<DestroyedTile>() {
 			{
 				add(new DestroyedTile("Forest", 	0.3, 		0,		1));
@@ -80,23 +92,45 @@ public class Tile {
 		//ngl longest variable declaration I've ever written.
 	};
 	
+	public static void getImages(Tile tile) {
+		String[] names = tile.getName().split(" ");
+		if (names.length == 1) {
+			if (tile.isTop) {
+				tile.topImage = new ImageHandler(tile.name);
+			} else {
+				tile.baseImage = new ImageHandler(tile.name);
+			}
+		} else {
+			tile.topImage = new ImageHandler(names[1]);
+			tile.baseImage = new ImageHandler(names[0]);
+		}
+	}
+
+	public Tile (String name) {
+		Tile ref = TILE_SET.get(name);
+		isVisible = ref.isVisible;
+		destroyed = ref.destroyed;
+		isDestroyable = ref.isDestroyable;
+		isTop = ref.isTop;
+		canStack = ref.canStack;
+		destroyedVersion = ref.destroyedVersion;
+		this.name = ref.name;
+		obscurity = ref.obscurity;
+		elevation = ref.elevation;
+		mobility = ref.mobility;
+		health = ref.health;
+	}
+	
 	@SuppressWarnings("unused")
 	private Tile () {
 		
 	}
 	
-	public Tile (String name, double health, double obscurity, int elevation, int mobility) {
-		this.name = name;
-		this.health = health;
-		if (this.health > 0) {
-			this.isDestroyable = true;
-		}
-		this.obscurity = obscurity;
-		this.elevation = elevation;
-		this.mobility = mobility;
+	private Tile (String name, double health, double obscurity, int elevation, int mobility) {
+		this(name, health, obscurity, elevation, mobility, false, false);
 	}
 	
-	public Tile (String name, double health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
+	private Tile (String name, double health, double obscurity, int elevation, int mobility, boolean canStack, boolean isTop) {
 		this.name = name;
 		this.health = health;
 		if (this.health > 0) {
@@ -105,8 +139,9 @@ public class Tile {
 		this.obscurity = obscurity;
 		this.elevation = elevation;
 		this.mobility = mobility;
-		this.isTop = isTop;
 		this.canStack = canStack;
+		this.canStack = canStack;
+		this.isTop = isTop;
 	}
 	
 	private Tile (Tile top, Tile bottom) {
@@ -127,6 +162,34 @@ public class Tile {
 		}
 	}
 	
+	public void createStack() {
+		getImages(this);
+		if (!stackPane.getChildren().contains(baseImage)) {
+			stackPane.getChildren().add(baseImage);
+		}
+		if (!(topImage == null) && !stackPane.getChildren().contains(topImage)) {
+			stackPane.getChildren().add(topImage);
+		}
+		if (!stackPane.getChildren().contains(utility.get("notVisible"))) {
+			this.visionImage = new ImageHandler("notVisible");
+			stackPane.getChildren().add(visionImage);
+		} 
+		if (isVisible) {
+			visionImage.setVisible(false);
+		} else {
+			visionImage.setVisible(true);
+		}
+	}
+	
+	public StackPane updateStack() {
+		if (isVisible) {
+			visionImage.setVisible(false);
+		} else {
+			visionImage.setVisible(true);
+		}
+		return stackPane;
+	}
+	
 	private void setDestroyedVersion(Tile tile) {
 		destroyedVersion = tile;
 	}
@@ -139,11 +202,11 @@ public class Tile {
 		return new Tile(this.name, this.health, this.obscurity, this.elevation, this.mobility, this.canStack, this.isTop);
 	}
 	
-	public boolean isVisible() {
+	public boolean isVisibleOnMap() {
 		return isVisible;
 	}
 	
-	public void setVisible(boolean set) {
+	public void setVisibleOnMap(boolean set) {
 		isVisible = set;
 	}
 	

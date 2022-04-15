@@ -1,13 +1,12 @@
 package application;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import utility.Pair;
 import utility.Pair.Path;
 
-public class Main {
+public class OldMain {
 
 	/**
 	 * A debug function intended to explicitly show different
@@ -22,11 +21,11 @@ public class Main {
 			for (int i = 0; i < map.length(); i++) {
 				Pair loc = new Pair (i, j);
 				if (attribute.equals("isVisible")) {
-					toPrint = map.isVisible(loc) ? "1" : "0";
+					toPrint = map.isVisibleOnMap(loc) ? "1" : "0";
 				} else if (attribute.equals("health")) {
 					toPrint = "" + map.getTile(loc).getHealth();
 				} else if (attribute.equals("isEntity")) {
-					toPrint = map.isEntity(loc) && map.isVisible(loc) ? "1" : "0";
+					toPrint = map.isEntity(loc) && map.isVisibleOnMap(loc) ? "1" : "0";
 				} else if (attribute.equals("type")) {
 					toPrint = "";
 					for (String a : map.getTile(loc).getName().split(" ")) {
@@ -68,7 +67,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		GameMap currentMap; 
-		Player[] players = {new Player(0), new Player(1)};
+		PlayerDEPRECIATED[] players = {new PlayerDEPRECIATED(0), new PlayerDEPRECIATED(1)};
 		
 		Scanner input = new Scanner(System.in);
 		

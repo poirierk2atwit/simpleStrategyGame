@@ -1,31 +1,77 @@
-package entities;
+package mapObjects;
 
 import java.util.ArrayList;
 
+import application.Game;
 import application.GameMap;
-import application.Main;
-import tiles.Tile;
-import utility.Node;
+import application.ImageHandler;
+import application.OldMain;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import utility.PathNode;
 import utility.Pair;
 import utility.Trigger;
 
 public abstract class Entity extends Pair {
+	public static ImageHandler selectedImage = new ImageHandler("selected");
 	public double health;
 	int viewDistance;
 	int moveDistance;
 	int range;
 	int team;
 	boolean[][] visionMap;
+	transient ImageHandler texture;
+	transient StackPane pane = new StackPane();
+	String name;
+	
+	public static void getImages(Entity entity) {
+		entity.texture = new ImageHandler(entity.name);
+	}
 	
 	//Do not use, only for Gson
 	@SuppressWarnings("unused")
 	protected Entity() {
-		
+
 	}
 	
 	public Entity(Pair pos, int team) {
 		super (pos);
 		this.team = team;
+	}
+	
+	public void createPane(GameMap m) {
+		getImages(this);
+		if (!pane.getChildren().contains(texture)) {
+			pane.getChildren().add(texture);
+		}
+		if (!(m.isVisibleOnMap(this))) {
+			pane.setVisible(false);
+		} else {
+			pane.setVisible(true);
+		}
+		pane.setLayoutX(this.x() * ImageHandler.SIZE);
+		pane.setLayoutY(this.y() * ImageHandler.SIZE);
+	}
+	
+	public StackPane updatePane(GameMap m) {
+		pane.setLayoutX(this.x() * ImageHandler.SIZE);
+		pane.setLayoutY(this.y() * ImageHandler.SIZE);
+		if (!(m.isVisibleOnMap(this))) {
+			pane.setVisible(false);
+		} else {
+			pane.setVisible(true);
+		}
+		return this.pane;
+	}
+	
+	public void select() {
+		Game.setSelectedEntity(this);
+		pane.getChildren().add(selectedImage);
+	}
+	
+	public void deselect() {
+		Game.setSelectedEntity(null);
+		pane.getChildren().remove(selectedImage);
 	}
 	
 	public String toString() {
@@ -190,13 +236,13 @@ public abstract class Entity extends Pair {
 	 * @return whether the entity can move to the tile x y
 	 */
 	public boolean canMove(GameMap m, Pair pos2) {
-		return Node.moveCost(m.getPath(this, pos2)) <= moveDistance && 
-				(!(m.isVisible(pos2) && m.isEntity(pos2))); 
+		return PathNode.moveCost(m.getPath(this, pos2)) <= moveDistance && 
+				(!(m.isVisibleOnMap(pos2) && m.isEntity(pos2))); 
 	}
 	
 	public boolean canMove(GameMap m, Pair pos2, Path path) {
-		return Node.moveCost(path) <= moveDistance && 
-				!(m.isVisible(pos2) && m.isEntity(pos2)); 
+		return PathNode.moveCost(path) <= moveDistance && 
+				!(m.isVisibleOnMap(pos2) && m.isEntity(pos2)); 
 	}
 	
 	/**
@@ -232,7 +278,7 @@ public abstract class Entity extends Pair {
 						}
 					}
 				}
-				System.out.print(Main.space(toPrint));
+				System.out.print(OldMain.space(toPrint));
 				//System.out.print(pos + " " + target + " " + loc);
 			}
 			System.out.print("\n\n");

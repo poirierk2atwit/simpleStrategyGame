@@ -295,4 +295,13 @@ public class Pair {
 	public int distanceY(Pair pair2) {
 		return pair2.y() - y();
 	}
+	
+	public boolean isBetween(Pair pos1, Pair pos2) {
+		if (x() < pos1.x() && x() < pos2.x() || x() > pos1.x() && x() > pos2.x()) {
+			return false;
+		} else if (y() < pos1.y() && y() < pos2.y() || y() > pos1.y() && y() > pos2.y()) {
+			return false;
+		}
+		return true;
+	}
 }

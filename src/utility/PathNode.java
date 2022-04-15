@@ -13,9 +13,9 @@ import utility.Pair.Path;
  * 
  * @author poirierk2
  */
-public class Node implements Comparable<Node> {
+public class PathNode implements Comparable<PathNode> {
     // Parent in the path
-    public Node parent = null;
+    public PathNode parent = null;
 
     public List<Edge> neighbors;
 
@@ -27,28 +27,28 @@ public class Node implements Comparable<Node> {
     public int h; 
     public Pair pos;
 
-    Node(Pair pos, Pair target){ 	
+    PathNode(Pair pos, Pair target){ 	
     	this.h = Math.abs(target.x() - pos.x()) + Math.abs(target.y() - pos.y());
     	this.pos = pos;
     	this.neighbors = new ArrayList<>();
     }
 
     @Override
-    public int compareTo(Node n) {
+    public int compareTo(PathNode n) {
           return Integer.compare(this.f, n.f);
     }
 
     public static class Edge {
-          Edge(int weight, Node node){
+          Edge(int weight, PathNode node){
                 this.weight = weight;
                 this.node = node;
           }
 
           public int weight;
-          public Node node;
+          public PathNode node;
     }
 
-    public void addBranch(int weight, Node node){
+    public void addBranch(int weight, PathNode node){
           Edge newEdge = new Edge(weight, node);
           neighbors.add(newEdge);
     }
@@ -57,18 +57,18 @@ public class Node implements Comparable<Node> {
           return this.h;
     }
     
-    public static Node aStar(Pair start, Pair target, int[][] mobilityMap){
-        PriorityQueue<Node> closedList = new PriorityQueue<>();
-        PriorityQueue<Node> openList = new PriorityQueue<>();
-        Node[][] nodes = new Node[mobilityMap.length][mobilityMap[0].length];
+    public static PathNode aStar(Pair start, Pair target, int[][] mobilityMap){
+        PriorityQueue<PathNode> closedList = new PriorityQueue<>();
+        PriorityQueue<PathNode> openList = new PriorityQueue<>();
+        PathNode[][] nodes = new PathNode[mobilityMap.length][mobilityMap[0].length];
 
-        Node first = nodes[start.x()][start.y()] = new Node(start, target);
+        PathNode first = nodes[start.x()][start.y()] = new PathNode(start, target);
         first.g = start.getFrom(mobilityMap);
         first.f = first.g + first.heuristic();
         openList.add(first);
 
         while(!openList.isEmpty()){
-            Node n = openList.peek();
+            PathNode n = openList.peek();
             if(n.pos.equals(target)){
                 return n;
             }
@@ -80,10 +80,10 @@ public class Node implements Comparable<Node> {
             		Pair offset = new Pair(offX[i], offY[i]);
             		try {
             			if (!(n.pos.getFrom(nodes, offset) == null)) {
-            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (Node) n.pos.getFrom(nodes, offset));
+            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (PathNode) n.pos.getFrom(nodes, offset));
             			} else {
-            				nodes[n.pos.x() + offX[i]][n.pos.y() + offY[i]] = new Node(n.pos.combine(offset), target);
-            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (Node) n.pos.getFrom(nodes, offset));
+            				nodes[n.pos.x() + offX[i]][n.pos.y() + offY[i]] = new PathNode(n.pos.combine(offset), target);
+            				n.addBranch(n.pos.getFrom(mobilityMap, offset), (PathNode) n.pos.getFrom(nodes, offset));
             			}
             		} catch (Exception e) {
             		
@@ -91,8 +91,8 @@ public class Node implements Comparable<Node> {
             	}
             }
 
-            for(Node.Edge edge : n.neighbors){
-                Node m = edge.node;
+            for(PathNode.Edge edge : n.neighbors){
+                PathNode m = edge.node;
                 int totalWeight = n.g + edge.weight;
 
                 if(!openList.contains(m) && !closedList.contains(m)){
@@ -121,8 +121,8 @@ public class Node implements Comparable<Node> {
         return null;
     }
 
-    public static void printPath(Node target){
-    	Node n = target;
+    public static void printPath(PathNode target){
+    	PathNode n = target;
 
         if(n==null) {
         	System.out.println("No Path");
@@ -138,9 +138,9 @@ public class Node implements Comparable<Node> {
         System.out.println("" + index + ":(" + n.pos.x() + "," + n.pos.y() + "), ");
     }
     
-    public static Path getPath(Node target) {
+    public static Path getPath(PathNode target) {
     	Path path = new Path(); 
-    	Node n = target;
+    	PathNode n = target;
 
         if(n==null) {
             return null;

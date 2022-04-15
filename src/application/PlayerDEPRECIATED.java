@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import utility.Action;
 import utility.Pair;
 
-public class Player {
+public class PlayerDEPRECIATED {
 	public static final int NUM_MOVES = 2;
 	int moves = NUM_MOVES;
 	int team;
@@ -13,7 +13,7 @@ public class Player {
 	Pair operationPos = new Pair();
 	ArrayList<Action<Object, Boolean>> actionQueue = new ArrayList<Action<Object, Boolean>>();
 	
-	public Player (int team) {
+	public PlayerDEPRECIATED (int team) {
 		this.team = team;
 	}
 	

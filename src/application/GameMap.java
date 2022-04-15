@@ -10,8 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
-import entities.*;
-import tiles.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import mapObjects.*;
 import utility.*;
 import utility.Pair.Path;
 
@@ -22,9 +24,12 @@ import utility.Pair.Path;
  */
 public class GameMap {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().
-			registerTypeAdapter(Entity.class, new EntityTypeAdapter()).create();
+			registerTypeAdapter(Entity.class, new EntityAdapter()).create();
 	private Tile[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private transient GridPane tilePane = null;
+	private transient Pane entityPane = null;
+	private transient StackPane mapStack = null;
 	
 	static Tile[][] rotate(Tile[][] array) {
 		if (array.length == 0 || array[0].length == 0) return null;
@@ -66,6 +71,62 @@ public class GameMap {
 		this.tiles = rotate(tiles);
 	}
 	
+	private GridPane createTilePane() {
+		if (tilePane == null) {
+			tilePane = new GridPane();
+			for (int j = 0; j < this.height(); j++) {
+				for (int i = 0; i < this.length(); i++) {
+					Pair loc = new Pair(i, j);
+					getTile(loc).createStack();
+					tilePane.add(getTile(loc).updateStack(), i, j);
+				}
+			}
+		}
+		return tilePane;
+	}
+	
+	private Pane createEntityGroup() {
+		if (entityPane == null) {
+			entityPane = new Pane();
+			entityPane.setLayoutX(0);
+			entityPane.setLayoutY(0);
+			for (int i = 0; i < entities.size(); i++) {
+				entities.get(i).createPane(this);
+				entityPane.getChildren().add(entities.get(i).updatePane(this));
+			}
+		}
+		return entityPane;
+	}
+	
+	private void updateTilePane() {
+		for (int j = 0; j < this.height(); j++) {
+			for (int i = 0; i < this.length(); i++) {
+				Pair loc = new Pair(i, j);
+				getTile(loc).createStack();
+			}
+		}
+	}
+	
+	private void updateEntityPane() {
+		for (int i = 0; i < entities.size(); i++) {
+			entities.get(i).updatePane(this);
+		}
+	}
+	
+	public StackPane getMapStack() {
+		if (mapStack == null) {
+			mapStack = new StackPane();
+			mapStack.getChildren().add(createTilePane());
+			mapStack.getChildren().add(createEntityGroup());
+		}
+		return mapStack;
+	}
+	
+	public void updateMapStack() {
+		updateTilePane();
+		updateEntityPane();
+	}
+	
 	/**
 	 * Gets the Tile object at position x y.
 	 * 
@@ -85,8 +146,8 @@ public class GameMap {
 	 * @param y y position
 	 * @return the isVisible method for the Tile at x y
 	 */
-	public boolean isVisible(Pair loc) {
-		return getTile(loc).isVisible();
+	public boolean isVisibleOnMap(Pair loc) {
+		return getTile(loc).isVisibleOnMap();
 	}
 	
 	/**]
@@ -218,7 +279,7 @@ public class GameMap {
 		for (int i = 0; i < length(); i++) {
 			for (int j = 0; j < height(); j++) {
 				Pair loc = new Pair (i, j);
-				if ((isVisible(loc) || omniscient) && isEntity(loc)) {
+				if ((isVisibleOnMap(loc) || omniscient) && isEntity(loc)) {
 					output[i][j] = Tile.IMPASS;
 				} else {
 					output[i][j] = tiles[i][j].getMobility();
@@ -233,7 +294,7 @@ public class GameMap {
 	}
 	
 	public Path getPath(Pair start, Pair target) {
-		return Node.getPath(Node.aStar(start, target, getMobilityMap()));
+		return PathNode.getPath(PathNode.aStar(start, target, getMobilityMap()));
 	}
 	
 	/**
@@ -301,6 +362,7 @@ public class GameMap {
 				entityDamage = damage;
 			}
 			if (getEntity(loc).damage(entityDamage)) {
+				entityPane.getChildren().remove(getEntity(loc).updatePane(this));
 				removeEntity(loc);
 			}
 		} else {
@@ -354,7 +416,7 @@ public class GameMap {
 					break;
 				}
 				int j2 = 0;
-				for (int j = thisEntity.y() - (thisVisionMap.length)/2; j <= thisEntity.x() + (thisVisionMap.length)/2; j++) {
+				for (int j = thisEntity.y() - (thisVisionMap.length)/2; j <= thisEntity.y() + (thisVisionMap.length)/2; j++) {
 					if (j < 0) {
 						j2 -= j;
 						j = -1;
@@ -362,7 +424,7 @@ public class GameMap {
 					} else if (j >= tiles[i].length) {
 						break;
 					}
-					tiles[i][j].setVisible(tiles[i][j].isVisible() || thisVisionMap[i2][j2]);
+					tiles[i][j].setVisibleOnMap(tiles[i][j].isVisibleOnMap() || thisVisionMap[i2][j2]);
 					j2++;
 				}
 				i2++;
@@ -371,9 +433,10 @@ public class GameMap {
 	}
 	
 	public void clearVisibility() {
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].setVisible(false);
+		for (int i = 0; i < length(); i++) {
+			for (int j = 0; j < height(); j++) {
+				Pair loc = new Pair(i, j);
+				getTile(loc).setVisibleOnMap(false);
 			}
 		}
 	}
@@ -464,6 +527,10 @@ public class GameMap {
 		return null;
 	}
 	
+	private interface TileBuilder {
+		Tile tile();
+	}
+	
 	/**
 	 * A main that can be run as a developer utility for creating maps. NOT THE MAIN FOR THE GAME.
 	 * 
@@ -479,34 +546,46 @@ public class GameMap {
 		//x = input.nextInt();
 		//y = input.nextInt();
 		
-		Tile o = Tile.TILE_SET.get("Ocean");
-		Tile g = Tile.TILE_SET.get("Grass");
-		Tile fg = Tile.TILE_SET.get("Grass Forest");
-		Tile b = Tile.TILE_SET.get("Beach");
-		Tile m = Tile.TILE_SET.get("Mountain");
-		Tile h = Tile.TILE_SET.get("Hill");
-		Tile fh = Tile.TILE_SET.get("Hill Forest");
+		TileBuilder o = () -> {return new Tile("Ocean");};
+		TileBuilder g = () -> {return new Tile("Grass");};
+		TileBuilder fg = () -> {return new Tile("Grass Forest");};
+		TileBuilder b = () -> {return new Tile("Beach");};
+		TileBuilder m = () -> {return new Tile("Mountain");};
+		TileBuilder h = () -> {return new Tile("Hill");};
+		TileBuilder fh = () -> {return new Tile("Hill Forest");};
 		
-		Tile[][] map = {
-			{g, g, g, g, g, g, g, g},
-			{g, g, g, g, g, g, g, g},
-			{g, g,fg, o, o,fg, g, g},
-			{g, g, g, g, g, g, g, g},
-			{g, g, g, g, g, g, g, g}
+		TileBuilder[][] prepMap = {
+			{o, o, b, b, g,fg, g,fg, g, g, g, g, b, o, o},
+			{o, b, b, g, g, g,fg,fg, g, g, g, g, g, b, o},
+			{o, b, g, g, g, g, g, g,fg, g, h, g, g, b, o},
+			{o, b, b, g, g, g,fg, g, g, g, g, g, h, h, o},
+			{o, o, b, g, g, g, g,fg,fg,fh, g, g, h, h, o},
+			{o, o, b, b, g, g,fg, g,fg, g, h, h, g, h, o},
+			{o, o, o, b, b,fg, g, g, g, g, g, g, b, o, o},
+			{o, o, o, o, b, b, g,fg, g, g, h, g, b, o, o},
 		};
+		
+		Tile[][] map = new Tile[prepMap.length][prepMap[0].length];
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				map[i][j] = prepMap[i][j].tile();
+			}
+		}
 		
 		//GameMap testMap = new GameMap(x, y);
 		GameMap testMap = new GameMap(map);
 		x = testMap.length();
 		y = testMap.height();
 		
-		testMap.addEntity(new Scout(new Pair (2, 2), 0));
-		testMap.addEntity(new Scout(new Pair (5, 2), 1));
+		testMap.addEntity(new Scout(new Pair (4, 1), 0));
+		testMap.addEntity(new Scout(new Pair (3, 3), 0));
+		testMap.addEntity(new Scout(new Pair (11, 1), 1));
+		testMap.addEntity(new Scout(new Pair (10, 4), 1));
 		
 		//System.out.println(testMap.toJson());
 		
-		String name = "standoff";// + x + "x" + y;
-		testMap.toFile(name, true);
+		String name = "island";// + x + "x" + y;
+		testMap.toFile(name, false);
 		
 		//System.out.println("\n" + GameMap.fromFile(name).toJson());
 		input.close();

@@ -1,9 +1,9 @@
-package entities;
+package mapObjects;
 
 import java.util.ArrayList;
 
 import application.GameMap;
-import utility.Node;
+import utility.PathNode;
 import utility.Pair;
 
 public class Scout extends Entity {
@@ -17,6 +17,7 @@ public class Scout extends Entity {
 		moveDistance = 5;
 		range = 6;
 		health = 20;
+		name = "Scout";
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class Scout extends Entity {
 	}
 	
 	public void move(GameMap m, Pair loc) {
-		Path path = Node.getPath(Node.aStar(new Pair(this), loc, m.getMobilityMap(true)));
+		Path path = PathNode.getPath(PathNode.aStar(new Pair(this), loc, m.getMobilityMap(true)));
 		double moveDist = moveDistance;
 		while (path.size() > 0) {
 			Pair next = path.pop();

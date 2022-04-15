@@ -1,6 +1,6 @@
 //https://stackoverflow.com/questions/16872492/gson-and-abstract-superclasses-deserialization-issue
 
-package entities;
+package mapObjects;
 
 import java.lang.reflect.Type;
 
@@ -13,7 +13,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class EntityTypeAdapter implements JsonSerializer<Entity>, JsonDeserializer<Entity> {
+public class EntityAdapter implements JsonSerializer<Entity>, JsonDeserializer<Entity> {
 	  @Override
 	  public JsonElement serialize(Entity src, Type typeOfSrc, JsonSerializationContext context) {
 	      JsonObject result = new JsonObject();

@@ -1,16 +1,12 @@
 package mapObjects;
 
-import java.util.ArrayList;
-
 import application.Game;
 import application.GameMap;
 import application.ImageHandler;
 import application.OldMain;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import utility.PathNode;
 import utility.Pair;
-import utility.Trigger;
 
 public abstract class Entity extends Pair {
 	public static ImageHandler selectedImage = new ImageHandler("selected");

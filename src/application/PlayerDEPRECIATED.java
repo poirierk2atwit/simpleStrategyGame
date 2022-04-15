@@ -2,7 +2,6 @@ package application;
 
 import java.util.ArrayList;
 
-import utility.Action;
 import utility.Pair;
 
 public class PlayerDEPRECIATED {
@@ -11,7 +10,6 @@ public class PlayerDEPRECIATED {
 	int team;
 	Pair selectedPos = new Pair();
 	Pair operationPos = new Pair();
-	ArrayList<Action<Object, Boolean>> actionQueue = new ArrayList<Action<Object, Boolean>>();
 	
 	public PlayerDEPRECIATED (int team) {
 		this.team = team;
@@ -27,17 +25,6 @@ public class PlayerDEPRECIATED {
 	
 	public boolean useMove() {
 		return moves-- > -1;
-	}
-	
-	public void addAction(Action<Object, Boolean> action) {
-		actionQueue.add(action);
-	}
-	
-	public Boolean doAction() {
-		if (actionQueue.size() == 0) {
-			return null;
-		}
-		return actionQueue.remove(0).exec();
 	}
 	
 	public void setSelectedPos(Pair loc) {
@@ -58,7 +45,6 @@ public class PlayerDEPRECIATED {
 	
 	public void newTurn() {
 		resetMoves();
-		actionQueue = new ArrayList<Action<Object, Boolean>>();
 		selectedPos = null;
 		operationPos = null;
 	}

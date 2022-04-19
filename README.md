@@ -22,9 +22,10 @@ To import Gson:
  - Go to https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
  - Next to files, select "jar" to download
  - Put the Gson jar file into a folder you chose.
-  Add to the buildpath
+Add to the buildpath
  - In eclipse, right click the project and navigate properties->Java Buildpath->Libraries
  - Under Module Path, remove gson.
+ - Apply
  - Select Module Path and then Add External Jars.
  - Navigate to where you left the gson jar, select it, and click open.
 
@@ -37,9 +38,10 @@ To import Javafx:
  - Select the library and then "Add External Jars"
  - Navigate to your sdk folder and open it. Open lib, select all jars, and then open.
  - Apply and close.
-  Add to the Buildpath
+Add to the Buildpath
  - Right click the project and navigate properties->Java Buildpath->Libraries
- - Under Module Path, remove JavaFx and apply.
+ - Under Module Path, remove JavaFx
+ - Apply.
  - Then, Select module path, navigate Library->User Library and select JavaFx
  - Click finish and Apply and Close.
 

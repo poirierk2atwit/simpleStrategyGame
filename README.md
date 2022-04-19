@@ -10,11 +10,17 @@ To run this project, first clone the repository.
  - In the third window, make sure the clone submodules box is checked.
  - Proceed to the fourth window and select finish.
 
+Or, you can open it directly from a file.
+ - In eclipse, navigate File->Open Project from File System
+ - Click directory and navigate to the root folder "Comp_Sci_Final".
+ - Select the folder and then click the "Select Folder" button
+ - Click Finish
+
 Next, you will need to import Gson and Javafx.
 
 To import Gson:
  - Go to https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
- - Next to files, select "jar"
+ - Next to files, select "jar" to download
  - Put the Gson jar file into a folder you chose.
   Add to the buildpath
  - In eclipse, right click the project and navigate properties->Java Buildpath->Libraries
@@ -38,7 +44,7 @@ To import Javafx:
  - Click finish and Apply and Close.
 
 NOTE: Sometimes eclipse gets confused during this process and will throw a ton of errors
-      in regards to the imports. In this case, try removing them from the build path and
+      in regards to the imports. In this case, try removing them from the buildpath and
       adding them back in again. This does not mean redownloading them, just continue the 
       previous instructions from the "Add to the buildpath" mark.
       

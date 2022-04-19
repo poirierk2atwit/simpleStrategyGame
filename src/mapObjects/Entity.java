@@ -3,7 +3,6 @@ package mapObjects;
 import application.Game;
 import application.GameMap;
 import application.ImageHandler;
-import application.OldMain;
 import javafx.scene.layout.StackPane;
 import utility.PathNode;
 import utility.Pair;
@@ -250,34 +249,4 @@ public abstract class Entity extends Pair {
 	 */
 	abstract public void move(GameMap m, Pair pos2);
 	
-	public static void main(String[] args) {
-		
-		//DirectPath testing
-		Pair pos = new Pair(9, 9);
-		Pair target = new Pair(2, 8);
-		GameMap currentMap = new GameMap(10, 10);
-		Path path = directPath(pos, target);
-		
-		String toPrint;
-		for (int j = 0; j < currentMap.height(); j++) {
-			for (int i = 0; i < currentMap.length(); i++) {
-				Pair loc = new Pair (i, j);
-				if (pos.equals(loc)) {
-					toPrint = "S";
-				} else if (target.equals(loc)) {
-					toPrint = "E";
-				} else {
-					toPrint = ".";
-					for (Pair a : path) {
-						if (loc.equals(a)) {
-							toPrint = "o";
-						}
-					}
-				}
-				System.out.print(OldMain.space(toPrint));
-				//System.out.print(pos + " " + target + " " + loc);
-			}
-			System.out.print("\n\n");
-		}
-	}
 }

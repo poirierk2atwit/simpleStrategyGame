@@ -11,6 +11,7 @@ To run this project, first clone the repository.
  - Proceed to the fourth window and select finish.
 
 Or, you can open it directly from a file.
+ - If in a zip file, extract to a folder of your choice
  - In eclipse, navigate File->Open Project from File System
  - Click directory and navigate to the root folder "Comp_Sci_Final".
  - Select the folder and then click the "Select Folder" button
@@ -24,7 +25,7 @@ To import Gson:
  - Put the Gson jar file into a folder you chose.
  - In eclipse, right click the project and navigate properties->Java Buildpath->Libraries
  - Under Module Path, remove gson.
- - Apply
+ - Click Apply
  - Select Module Path and then Add External Jars.
  - Navigate to where you left the gson jar, select it, and click open.
 
@@ -39,7 +40,7 @@ To import Javafx:
  - Apply and close.
  - Right click the project and navigate properties->Java Buildpath->Libraries
  - Under Module Path, remove JavaFx
- - Apply.
+ - Click Apply.
  - Then, Select module path, navigate Library->User Library and select JavaFx
  - Click finish and Apply and Close.
 

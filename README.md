@@ -1,4 +1,4 @@
-# Comp_Sci_Final
+# simpleStrategyGame
 Final Project for Comp Sci II
 
 To run this project, first clone the repository.
